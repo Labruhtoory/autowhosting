@@ -38,6 +38,17 @@ echo "iptables -A INPUT -s x.x.x.x -j DROP" >> /etc/iptables.test.rules
 #Add a new rule to allow the rest of the internet traffic (All the rules to drop traffic must be created before this rule)
 echo "iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT" >> /etc/iptables.test.rules
 
+#ipv4 forwarding
+sudo sysctl -w net.ipv4.ip_foraward = 1
 
+
+#Prerouting
+sudo iptables -t nat -A PREROUTING -p tcp -i eth1 --dport 80 -m state --state NEW -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 192.168.2.2:80
+sudo iptables -t nat -A PREROUTING -p tcp -i eth1 --dport 80 -m state --state NEW -m statistic --mode nth --every 2 --packet 1 -j DNAT --to-destination 192.168.2.3:80
+
+
+
+#save-config
+sudo iptables-save
 
 echo "" >> /etc/iptables.test.rules

@@ -25,7 +25,7 @@ echo "static domain_name_servers=1.1.1.1 1.0.0.1" >> /etc/dhcpcd.conf
 
                               ### dependencies for tasks
 apt update
-apt install nano nginx php-fpm 
+apt install nginx php-fpm 
 
 
 
