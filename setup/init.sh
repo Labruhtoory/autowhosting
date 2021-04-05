@@ -78,11 +78,11 @@ else
     
     touch /etc/nginx/sites-available/$site
     mkdir /var/www/$site/html
-    sed 's/websitename/;s/$site /opt/Web_Host_Standalone_Server/setup/ssl_server_template
+    sed 's/websitename/;s/$site' /opt/Web_Host_Standalone_Server/setup/ssl_server_template
     cp /opt/Web_Host_Standalone_Server/setup/ssl_server_template /etc/nginx/sites-available/$site
     ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
     sudo systemctl restart nginx
-
+fi
 clear
 sudo ufw app list
 systemctl status nginx
