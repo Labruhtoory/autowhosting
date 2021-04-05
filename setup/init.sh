@@ -47,6 +47,11 @@ then
 else  
     #nginx
     systemctl enable nginx
+    #basic vpn
+    sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
+    unzip VPNBook.com-OpenVPN-US2.zip
+    sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
+    
     #tmeplate
     touch /opt/mkservice.txt
     echo "[Unit]\nDescriptoin= Your description here...\n\n[Service]\nExecStart=/path/to/script.script\n\n[Install]\WantedBy=multi-user.target\n\n#Don't forget to run 'systemctl daemon-reload', or just reboot" > /opt/mkservice.txt
