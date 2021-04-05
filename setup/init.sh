@@ -7,7 +7,7 @@ cd /opt
 echo 'keep in mind the default answer is yes...'
 read -p 'Need to add Repo? y/n> ' repo
 read -p 'Install tools? y/n>' tools
-read -p 'Create service template? y/n>' serv
+read -p 'Create services & template? y/n>' serv
 
 if [ $repo == "n"]
 then
@@ -42,8 +42,10 @@ fi
 
 if [ $serv == "n"]
 then
-    echo "skipping service template"
+    echo "skipping services & template"
 else  
+    #nginx
+    systemctl enable nginx
     #tmeplate
     touch /opt/mkservice.txt
     echo "[Unit]\nDescriptoin= Your description here...\n\n[Service]\nExecStart=/path/to/script.script\n\n[Install]\WantedBy=multi-user.target\n\n#Don't forget to run 'systemctl daemon-reload', or just reboot" > /opt/mkservice.txt
