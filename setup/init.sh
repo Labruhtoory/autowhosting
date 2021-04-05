@@ -5,11 +5,12 @@ echo 'moving to /opt'
 cd /opt
 
 echo 'keep in mind the default answer is yes...'
+read -p 'If u were to create a new website, what would u name it for file storage EX: mysite' site
+read -p 'New website? y/n' nsite
 read -p 'Need to add Repo? y/n> ' repo
 read -p 'Install tools? y/n>' tools
 read -p 'Create services & template? y/n>' serv
-#ssl
-    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+
 if [ $repo == "n"]
 then
     echo "skipping repo..."
@@ -45,28 +46,7 @@ if [ $serv == "n"]
 then
     echo "skipping services & template"
 else  
-    #nginx
-    systemctl enable nginx
-    touch /etc/nginx/snippets/self-signed.conf
-    echo"ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;" >> /etc/nginx/snippets/self-signed.conf 
-    echo"ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;" >> /etc/nginx/snippets/self-signed.conf 
-    touch /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_protocols TLSv1.2;" > /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_prefer_server_ciphers on;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_dhparam /etc/ssl/certs/dhparam.pem;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_ciphers ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_ecdh_curve secp384r1; # Requires nginx >= 1.1.0" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_session_timeout  10m;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_session_cache shared:SSL:10m;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "ssl_session_tickets off; # Requires nginx >= 1.5.9" >> /etc/nginx/snippets/ssl-params.conf
-    echo "# ssl_stapling on; # Requires nginx >= 1.3.7" >> /etc/nginx/snippets/ssl-params.conf
-    echo "# ssl_stapling_verify on; # Requires nginx => 1.3.7" >> /etc/nginx/snippets/ssl-params.conf
-    echo "resolver 8.8.8.8 8.8.4.4 valid=300s;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "resolver_timeout 5s;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "add_header X-Frame-Options DENY;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "add_header X-Content-Type-Options nosniff;" >> /etc/nginx/snippets/ssl-params.conf
-    echo "add_header X-XSS-Protection "1; mode=block";" >> /etc/nginx/snippets/ssl-params.conf
-  
+    
     #basic vpn
     sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
     unzip VPNBook.com-OpenVPN-US2.zip
@@ -81,5 +61,30 @@ else
     [Install]\WantedBy=multi-user.target
     #Don't forget to run 'systemctl daemon-reload', or just reboot" > /opt/mkservice.txt
 fi
+
+if [ $nsite == "n"]
+then 
+    echo "not adding a new site..."
+else
+    #nginx
+    systemctl enable nginx
+    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+    touch /etc/nginx/snippets/self-signed.conf
+    echo"ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;" >> /etc/nginx/snippets/self-signed.conf 
+    echo"ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;" >> /etc/nginx/snippets/self-signed.conf 
+    cp /opt/Web_Host_Standalone_Server/setup/ssl-params.conf /etc/nginx/snippets/ssl-params.conf
+    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+    rm -rf /etc/sites-available/* /etc/nginx/sites-enabled/*
+    
+    touch /etc/nginx/sites-available/$site
+    mkdir /var/www/$site/html
+    sed 's/websitename/;s/$site /opt/Web_Host_Standalone_Server/setup/ssl_server_template
+    cp /opt/Web_Host_Standalone_Server/setup/ssl_server_template /etc/nginx/sites-available/$site
+    ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
+    sudo systemctl restart nginx
+
+clear
+sudo ufw app list
+systemctl status nginx
 
 echo "Done!"
