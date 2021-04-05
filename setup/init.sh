@@ -5,8 +5,6 @@ echo 'moving to /opt'
 cd /opt
 
 echo 'keep in mind the default answer is yes...'
-read -p 'If u were to create a new website, what would u name it for file storage EX: mysite' site
-read -p 'New website? y/n' nsite
 read -p 'Need to add Repo? y/n> ' repo
 read -p 'Install tools? y/n>' tools
 read -p 'Create services & template? y/n>' serv
@@ -55,36 +53,15 @@ else
     
     #tmeplate
     touch /opt/mkservice.txt
-    echo "[Unit]
-    Descriptoin= Your description here...
-    [Service]\nExecStart=/path/to/script.script
-    [Install]\WantedBy=multi-user.target
+    echo "[Unit]" > /opt/mkservice.txt
+    echo"Descriptoin=Your description here..." >> /opt/mkservice.txt
+    echo"[Service]" >> /opt/mkservice.txt
+    echo"ExecStart=/path/to/script.script" >> /opt/mkservice.txt
+    echo"[Install]" >> /opt/mkservice.txt
+    echo"WantedBy=multi-user.target" >> /opt/mkservice.txt
     #Don't forget to run 'systemctl daemon-reload', or just reboot" > /opt/mkservice.txt
 fi
 
-if [ $nsite == "n"]
-then 
-    echo "not adding a new site..."
-else
-    #nginx
-    systemctl enable nginx
-    sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
-    touch /etc/nginx/snippets/self-signed.conf
-    echo"ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;" >> /etc/nginx/snippets/self-signed.conf 
-    echo"ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;" >> /etc/nginx/snippets/self-signed.conf 
-    cp /opt/Web_Host_Standalone_Server/setup/ssl-params.conf /etc/nginx/snippets/ssl-params.conf
-    sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
-    rm -rf /etc/sites-available/* /etc/nginx/sites-enabled/*
-    
-    touch /etc/nginx/sites-available/$site
-    mkdir /var/www/$site/html
-    sed 's/websitename/;s/$site' /opt/Web_Host_Standalone_Server/setup/ssl_server_template
-    cp /opt/Web_Host_Standalone_Server/setup/ssl_server_template /etc/nginx/sites-available/$site
-    ln -s /etc/nginx/sites-available/$site /etc/nginx/sites-enabled/
-    sudo systemctl restart nginx
-fi
 clear
-sudo ufw app list
-systemctl status nginx
 
 echo "Done!"
