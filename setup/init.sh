@@ -50,4 +50,6 @@ else
     #tmeplate
     touch /opt/mkservice.txt
     echo "[Unit]\nDescriptoin= Your description here...\n\n[Service]\nExecStart=/path/to/script.script\n\n[Install]\WantedBy=multi-user.target\n\n#Don't forget to run 'systemctl daemon-reload', or just reboot" > /opt/mkservice.txt
-    
+fi
+
+echo "Done!"
