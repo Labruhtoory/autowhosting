@@ -11,7 +11,7 @@ chmod 0400 /etc/ssl/private/serv.key
 touch /etc/nginx/conf.d/serv.conf 
 touch /etc/nginx/conf.d/serv-ssl.conf
 
-mv /opt/Web_Host_Standalone_Server/setup/confs/serv.conf /etc/nginx/conf.d/serv.conf
-mv /opt/Web_Host_Standalone_Server/setup/confs/serv.conf /etc/nginx/conf.d/serv-ssl.conf
+cp /opt/Web_Host_Standalone_Server/setup/confs/serv.conf /etc/nginx/conf.d/serv.conf
+cp /opt/Web_Host_Standalone_Server/setup/confs/ssl-serv.conf /etc/nginx/conf.d/ssl-serv.conf
 
-echo "see confs for creating config files"
+echo "see /etc/nginx/conf.d for editing configuration files"
