@@ -1,0 +1,17 @@
+This is for setting up a site with the help of Cert-Bot
+The only things to pay attention to are http2 and renewing your certificate.
+
+In ur nginx server config file, enable http2 by finding:
+
+listen 443 ssl;
+
+and changing to:
+
+listen 443 ssl http2;
+
+
+For renewing your certificate, schedule a cron job (i made it for every month, technically just the first day of every moth):
+
+crontab -e 
+
+0 0 1 * * sudo certbot renew
