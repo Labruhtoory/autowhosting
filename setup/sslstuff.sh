@@ -6,7 +6,7 @@ openssl req -newkey rsa:2048 -nodes -keyout /etc/ssl/private/serv.key -x509 -day
 
 
 chmod 0400 /etc/ssl/certs/serv.crt
-chmod 0400 /etc/ssl/private/serv.crt
+chmod 0400 /etc/ssl/private/serv.key
 
 touch /etc/nginx/conf.d/serv.conf 
 touch /etc/nginx/conf.d/serv-ssl.conf
