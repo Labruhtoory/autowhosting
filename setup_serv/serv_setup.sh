@@ -75,7 +75,7 @@ sudo chmod -R g+w /var/www/wordpress/wp-content/themes
 sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
 
 cd /opt/
-sudo apt install -fy php php7.2-cgi php7.0 unit-php mongodb
+sudo apt install -fy php php7.2-cgi php7.0 mongodb
 sudo apt remove -y apache2 apache2-utils
 clear
 
