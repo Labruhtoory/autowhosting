@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo 'moving to /opt'
-#init
-cd /opt 
 
 #networking
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
@@ -10,13 +7,20 @@ echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
 sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server
 sudo python3 -m pip install --upgrade pip
+echo "making some slight adjustments to nginx"
+systemctl enable nginx && systemctl restart nginx
+sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+mv serv-confs-defaults/serv* /etc/nginx/conf.d
 clear
+
+echo 'moving to /opt'
+cd /opt 
 
 #dbs and wordpress setup
 echo "setting up initial database drive, database support, and support for wordpress....."
 cd /var/www/
 mkdir /mnt/usbdb1
-echo "Have you plugged in a usb device?"
+echo "Have you plugged in a usb device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
 while : ; do
 read -n 1 k <&1
@@ -95,7 +99,9 @@ make && make install
 
 #ssl certbot
 clear
-echo "installing certbot"
+echo "installing certbot....."
+read -p "What domain name would you like to use for your website?> " $domain
+sed -i "s/domain.dns/$domain/gi" /etc/nginx/conf.d/serv.conf
 sudo apt-get install -fy software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
