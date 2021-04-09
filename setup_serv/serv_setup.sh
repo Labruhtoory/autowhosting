@@ -33,11 +33,11 @@ mount /dev/$answ /mnt/usbdb1/
 echo "Mounted $answ to /mnt/usbdb1"
 ln -s /mnt/usbdb1/ /var/www/
 echo "created sybolic link folder for database drive $answ "
-cd /var/www/usbdb1/
-clear
 
+cd /var/www/usbdb1/
 echo "setting up initial mysql wordpress database"
 sudo mysql_secure_installation
+clear
 echo "Now enter your MYSQL root passwd in the prompt below."
 echo "Run the folowing commands in the mysql> prompt: "
 echo "CREATE DATABASE wordpress;"
