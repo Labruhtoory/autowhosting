@@ -8,13 +8,16 @@ cd /opt
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 
-sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx 
+sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server php php7.2-cgi
 sudo python3 -m pip install --upgrade pip
 
 #basic vpn
 sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
 unzip VPNBook.com-OpenVPN-US2.zip
 sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
+
+#db
+sudo 
 
 #certbot
 sudo apt-get install software-properties-common
