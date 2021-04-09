@@ -13,11 +13,10 @@ sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
 clear
 
-echo 'moving to /opt'
-cd /opt 
 
 #dbs and wordpress setup
 echo "setting up initial database drive, database support, and support for wordpress....."
+mv wordpress.config /opt/
 cd /var/www/
 mkdir /mnt/usbdb1
 echo "Have you plugged in a usb device? If not, now is the time to do it....."
@@ -57,6 +56,7 @@ cd /var/www/
 sudo wget http://wordpress.org/latest.tar.gz
 sudo tar xzvf latest.tar.gz
 rm -rf latest.tar.gz
+mv /opt/wordpress.config /var/www/wordpress/
 cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 curl -s https://api.wordpress.org/secret-key/1.1/salt/
