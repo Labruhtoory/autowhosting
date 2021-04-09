@@ -42,7 +42,7 @@ echo "Now enter your MYSQL root passwd in the prompt below."
 echo "Run the folowing commands in the mysql> prompt: "
 echo "CREATE DATABASE wordpress;"
 echo "CREATE USER newuserhere IDENTIFIED BY 'newpasswordhere';"
-echo "GRANT ALL PRIVILEGES ON wordpress.* TO labruhtooryboi;"
+echo "GRANT ALL PRIVILEGES ON wordpress.* TO newuserhere;"
 echo "FLUSH PRIVILEGES;"
 echo "EXIT"
 sudo mysql -u root -p
