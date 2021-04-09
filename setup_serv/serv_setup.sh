@@ -38,6 +38,7 @@ clear
 
 echo "setting up initial mysql wordpress database"
 sudo mysql_secure_installation
+echo "Now enter your MYSQL root passwd in the prompt below."
 echo "Run the folowing commands in the mysql> prompt: "
 echo "CREATE DATABASE wordpress;"
 echo "CREATE USER labruhtooryboi IDENTIFIED BY 'toortoor';"
