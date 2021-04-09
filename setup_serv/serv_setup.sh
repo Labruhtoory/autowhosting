@@ -84,7 +84,7 @@ cd /opt/
 # nginx unit source download, compilation, and install
 sudo apt install -fy build-essential golang
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
-sudo apt install nodejs
+sudo apt install -fy nodejs
 npm install -g node-gyp
 sudo apt install -fy openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev
 git clone https://github.com/nginx/unit.git
