@@ -73,14 +73,27 @@ sudo chmod g+w /var/www/wordpress/wp-content
 sudo chmod -R g+w /var/www/wordpress/wp-content/themes
 sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
 
-cd /opt
+cd /opt/
 sudo apt install -fy php php7.2-cgi php7.0 unit-php mongodb
 sudo apt remove -y apache2 apache2-utils
 clear
 
 echo "Installing nginx unit for wordpress....."
+cd /opt/
+# nginx unit source download, compilation, and install
+sudo apt install -fy build-essential golang
+curl -sL https://deb.nodesource.com/setup_12.x | bash -
+sudo apt install nodejs
+npm install -g node-gyp
+sudo apt install -fy openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev
+git clone https://github.com/nginx/unit.git
+cd unit/
+./configure --state=/var/lib/unit --log=/var/log/unit.log --control=unix:/run/control.unit.sock --prefix=/usr/local/ --openssl
+./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
+make && make install 
 
 #ssl certbot
+clear
 echo "installing certbot"
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
@@ -102,6 +115,10 @@ git clone https://github.com/macvk/dnsleaktest.git
 go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
 chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
+
+#xtra golang packages 
+go get github.com/gorilla/websocket
+go get unit.nginx.org/go
 
 echo " don't forget to add a cron job 'sudo certbot renew'"
 echo "crontab -e"
