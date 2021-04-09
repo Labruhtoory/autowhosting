@@ -10,7 +10,7 @@ sudo python3 -m pip install --upgrade pip
 echo "making some slight adjustments to nginx"
 systemctl enable nginx && systemctl restart nginx
 sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-mv serv-confs-defaults/serv* /etc/nginx/conf.d
+mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
 clear
 
 echo 'moving to /opt'
@@ -56,6 +56,7 @@ echo "Setting up wordpress"
 cd /var/www/
 sudo wget http://wordpress.org/latest.tar.gz
 sudo tar xzvf latest.tar.gz
+rm -rf latest.tar.gz
 cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 curl -s https://api.wordpress.org/secret-key/1.1/salt/
