@@ -1,0 +1,38 @@
+server {
+    server_name domain.dns;
+    root /var/www;
+    index index.nginx-debian.html;
+
+	location /chatterbox {
+		index chat.html
+	}
+
+	#client side caching
+	    # Media: images, icons, video, audio, HTC
+	location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|mp4|ogg|ogv|webm|htc)$ {
+		access_log off;
+		add_header Cache-Control "max-age=2592000";
+	}
+	    # CSS and Javascript
+	    location ~* \.(?:css|js)$ {
+	      add_header Cache-Control "max-age=31536000";
+	      access_log off;
+	}
+
+	listen 443 ssl http2; # managed by Certbot
+	ssl_certificate /etc/letsencrypt/live/dmltc3v4.cf/fullchain.pem; # managed by Certbot
+	ssl_certificate_key /etc/letsencrypt/live/dmltc3v4.cf/privkey.pem; # managed by Certbot
+	include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+	ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+server {
+	root /var/www/html;
+	listen 80;
+	server_name domain.dns;
+
+	location / {
+		return 301 https://$host$request_uri;
+	}
+	#return 404; # managed by Certbot
+}
