@@ -38,12 +38,13 @@ systemctl enable nginx && systemctl restart nginx
 sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
 go get github.com/gorilla/websocket
-clear
-##############################    MariaDB (MySQL) for Wordpress Install, Setup, Data Migration, and Config   ##############################
-echo "setting up initial database drive, database support, and support for wordpress....."
 mv wordpress.config /opt/
 cd /var/www/
+clear
+##############################    DB DataDrive Setup ##############################
+echo "Setting up initial database drive....."
 echo "Please insert a drive with only one partition....."
+lsblk | grep "disk\|part"
 echo "Have you plugged in a device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
 while : ; do
@@ -63,6 +64,7 @@ sudo mount /dev/$answ /dbs
 echo "/dev/$answ        /dbs        ext4    defaults      0      0" >> /etc/fstab
 echo "Ok, /dev/$answ with ext4 filsystem is prepped for mounting on boot"
 clear
+##############################    MariaDB (MySQL) for Wordpress Install, Setup, Data Migration, and Config   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
 sudo rsync -rltDvz /var/lib/mysql /dbs
@@ -88,6 +90,8 @@ echo "FLUSH PRIVILEGES;"
 echo "EXIT"
 sudo mysql -u root -p
 clear
+##############################    MongoDB (NoSQL) for Wordpress Install, Setup, Data Migration, and Config   ##############################
+
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
 echo "Setting up wordpress"
 cd /var/www/
