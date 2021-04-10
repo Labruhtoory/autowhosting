@@ -1,5 +1,6 @@
 #!/bin/bash
 #initial comments
+clear
 echo "*Quick note, say yes to and fill out all services' prompts. Just makes the process easier :)"
 echo ""
 echo "Before you begin, make sure that you keep track of your credentials that you setup....."
