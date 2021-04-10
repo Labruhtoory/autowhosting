@@ -13,7 +13,7 @@ mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
 clear
 
 
-#dbs and wordpress setup
+#MariaDB (MySQL) setup
 echo "setting up initial database drive, database support, and support for wordpress....."
 mv wordpress.config /opt/
 cd /var/www/
@@ -33,15 +33,10 @@ lsblk | grep "disk\|part"
 echo -n "What is the new partition name to mount?"
 read answ
 echo "mounting $answ"
+mkdir /mnt/usbdb1/
 mount /dev/$answ /mnt/usbdb1/
-mkdir /mnt/usbdb1/sysbase
-sudo chown mysql:mysql /mnt/usbdb1/sysbase
-sudo rsync -avzh /var/lib/mysql/ /mnt/usbdb1/sysbase
-echo "Mounted $answ to /mnt/usbdb1"
-ln -s /mnt/usbdb1/sysbase /var/www/
-echo "created sybolic link folder for database drive $answ "
+clear
 
-cd /var/www/usbdb1/
 echo "setting up initial mysql wordpress database"
 sudo mysql_secure_installation
 clear
@@ -55,6 +50,18 @@ echo "EXIT"
 sudo mysql -u root -p
 clear
 
+echo "Migrating MariaDB data to mounted disk"
+sudo systemctl stop mariadb
+sudo rsync -av /var/lib/mysql /mnt/usbdb1/
+cp /var/lib/mysql /var/lib/mysql.bak
+#ln -s /mnt/usbdb1/mysql /var/www/
+#echo "created sybolic link folder for database drive $answ "
+echo "Mounted $answ to /mnt/usbdb1 and migrated MariaDB data"
+clear
+
+
+
+#Wordpress init setup
 echo "Setting up wordpress"
 cd /var/www/
 sudo wget http://wordpress.org/latest.tar.gz
