@@ -1,4 +1,16 @@
 #!/bin/bash
+#init
+cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
+echo "Take this time to review your system's state....."
+echo "EX: Is it a fresh install? or Are all services in default, 'factory' settings?"
+"Press Ctrl +c twice to cancel, and 'c' to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+printf "Ok then, moving on....."
+break
+fi
+done
 ##############################  Initial comments  ##############################
 clear
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
@@ -51,7 +63,6 @@ sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 read -p "What domain name would you like to use for your website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
-mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
 systemctl restart nginx
 sudo apt-get install -fy software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
