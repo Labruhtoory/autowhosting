@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #networking
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
@@ -19,6 +18,8 @@ echo "setting up initial database drive, database support, and support for wordp
 mv wordpress.config /opt/
 cd /var/www/
 mkdir /mnt/usbdb1
+echo "Migrating MySQL drive....."
+echo "Please insert a drive with only one empty partition....."
 echo "Have you plugged in a usb device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
 while : ; do
@@ -33,8 +34,11 @@ echo -n "What is the new partition name to mount?"
 read answ
 echo "mounting $answ"
 mount /dev/$answ /mnt/usbdb1/
+mkdir /mnt/usbdb1/sysbase
+sudo chown mysql:mysql /mnt/usbdb1/sysbase
+sudo rsync -avzh /var/lib/mysql/ /mnt/usbdb1/sysbase
 echo "Mounted $answ to /mnt/usbdb1"
-ln -s /mnt/usbdb1/ /var/www/
+ln -s /mnt/usbdb1/sysbase /var/www/
 echo "created sybolic link folder for database drive $answ "
 
 cd /var/www/usbdb1/
