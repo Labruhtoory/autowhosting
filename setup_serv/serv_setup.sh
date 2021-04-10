@@ -168,9 +168,8 @@ cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 clear
 echo "Editing wordpress mysql config...."
-sed -i "s/database_name_here/wordpress/gi" /var/www/wordpress/wp-config.php
-read -p "What is your new MariaDB (MySQL) username? " unanmer
-sed -i "s/username_here/$unamer/gi" /var/www/wordpress/wp-config.php
+read -p "What is your new MariaDB (MySQL) username? " utut
+sed -i "s/username_here/$utut/gi" /var/www/wordpress/wp-config.php
 read -p "What is your new MariaDB (MySQL) password? " passwder
 sed -i "s/password_here/$passwder/gi" /var/www/wordpress/wp-config.php
 clear
@@ -204,7 +203,9 @@ sudo find /var/www/wordpress -type d -exec chmod g+s {} \;
 sudo chmod g+w /var/www/wordpress/wp-content
 sudo chmod -R g+w /var/www/wordpress/wp-content/themes
 sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
+clear
 ##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
+cd /opt/
 echo "Getting a free vpn config file from vpnbook.com/freevpm....."
 sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
 unzip VPNBook.com-OpenVPN-US2.zip
@@ -216,10 +217,12 @@ git clone https://github.com/macvk/dnsleaktest.git
 go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
 chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
+clear
 ##############################    NGINX Unit Source, Config, Build, and Install     ##############################
 cd /opt/
-sudo apt install -fy php php7.2-cgi php7.0 mongodb
+sudo apt install -fy php php7.2-cgi php7.0
 sudo apt remove -y apache2 apache2-utils
+rm -rf /var/www/html/index.html
 clear
             
               
