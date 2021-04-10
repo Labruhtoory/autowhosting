@@ -1,6 +1,5 @@
 #!/bin/bash
 #init
-cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
 echo "Take this time to review your system's state....."
 echo "EX: Is it a fresh install? or Are all services in default, 'factory' settings?"
 "Press Ctrl +c twice to cancel, and 'c' to continue....."
@@ -11,8 +10,9 @@ printf "Ok then, moving on....."
 break
 fi
 done
-##############################  Initial comments  ##############################
+cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
 clear
+##############################  Initial comments  ##############################
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
 echo ""
 echo "Before you begin, make sure that you keep track of your credentials that you setup....."
