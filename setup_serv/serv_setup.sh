@@ -82,7 +82,7 @@ sudo systemctl restart nginx
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
-echo "Please insert a drive with only one partition....."
+echo "Please insert a drive with the desired (EMPTY) partition to use....."
 lsblk | grep "disk\|part"
 echo "Have you plugged in a device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
