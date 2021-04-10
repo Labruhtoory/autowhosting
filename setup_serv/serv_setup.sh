@@ -220,28 +220,20 @@ chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
 clear
 ##############################    NGINX Unit Source, Config, Build, and Install     ##############################
-cd /opt/
-sudo apt install -fy php php7.2-cgi php7.0 &> /dev/null
-sudo apt remove -y apache2 apache2-utils &> /dev/null
-rm -rf /var/www/html/index.html
-clear
-            
-              
-                                           ###   need to figure out installing nginx unit
-
 echo "Installing nginx unit for wordpress....."
-
-
-
 cd /opt/
-# nginx unit source download, compilation, and install 
-sudo apt install -fy build-essential golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
+sudo apt install -fy  php php7.2-cgi php7.0 build-essential golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
+sudo apt remove -y apache2 apache2-utils &> /dev/null
 curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
+rm -rf /var/www/html/index.html
 sudo apt install -fy nodejs &> /dev/null
 npm install -g node-gyp &> /dev/null
+
+# nginx unit source download, compilation, and install   ###   need to figure out installing nginx unit
 git clone https://github.com/nginx/unit.git &> /dev/null
 cd unit/
-echo "Configuring Unit....."
+echo "Configuring Unit....."                                          
+                                                 
 ./configure --state=/var/lib/unit --log=/var/log/unit.log --control=unix:/run/control.unit.sock --prefix=/usr/local/ --openssl
 ./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
 make && make install 
