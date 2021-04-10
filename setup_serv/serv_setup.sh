@@ -114,7 +114,7 @@ sudo mount /dev/$answ /dbs
 echo "/dev/$answ        /dbs        ext4    defaults      0      0" >> /etc/fstab
 echo "Ok, /dev/$answ with ext4 filsystem is prepped for mounting on boot"
 clear
-##############################    MariaDB (MySQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
+##############################    MariaDB (MySQL) Install and Data Migration   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
 sudo rsync -rltDvz /var/lib/mysql /dbs
