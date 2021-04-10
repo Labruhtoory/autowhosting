@@ -37,9 +37,7 @@ echo -n "What is the new partition to mount? (EX: sda1, sda2, sdb1 etc.....): "
 read answ
 
 
-
 mkfs.ext4 /dev/$answ
-
 
 
 echo "mounting $answ"
@@ -67,14 +65,12 @@ sudo systemctl stop mariadb
 sudo rsync -rltDvz /var/lib/mysql /dbs
 #cp -R /var/lib/mysql
 
-
 chmod -R 777 /dbs
 chmod -R 777 /var/lib/mysql
 sudo chown -R mysql:mysql /dbs
 sudo chown -R mysql:mysql /var/lib/mysql
 mysql -u root -p
 # \! cp -R /var/lib/mysql /dbs
-
 
 echo "In a sparate terminal, edit: /etc/mysql/mariadb.conf.d/50-server.cnf..."
 echo "Change datadir to /dbs "
