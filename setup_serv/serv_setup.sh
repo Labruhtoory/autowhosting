@@ -18,7 +18,6 @@ echo "setting up initial database drive, database support, and support for wordp
 mv wordpress.config /opt/
 cd /var/www/
 mkdir /mnt/usbdb1
-echo "Migrating MySQL drive....."
 echo "Please insert a drive with only one empty partition....."
 echo "Have you plugged in a usb device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
@@ -113,7 +112,7 @@ make && make install
 clear
 echo "installing certbot....."
 read -p "What domain name would you like to use for your website?> " $domain
-sed -i "s/domain.dns/$domain/gi" /etc/nginx/conf.d/serv.conf
+sed -i "s/domain.dns/$domain/gi" /etc/nginx/conf.d/wpdef-serv.conf
 sudo apt-get install -fy software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
