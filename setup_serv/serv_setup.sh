@@ -51,8 +51,10 @@ clear
 
 echo "Migrating MariaDB data to mounted disk"
 sudo systemctl stop mariadb
-sudo rsync -av /var/lib/mysql /mnt/usbdb1/
-cp /var/lib/mysql /var/lib/mysql.bak
+sudo rsync -rltDvz /var/lib/mysql /mnt/usbdb1/
+sudo cp -r /var/lib/mysql /var/lib/mysql.bak
+echo "In a sparate terminal, edit: /etc/mysql/mariadb.conf.d/50-server.cnf..."
+echo "Change datadir to /mnt/usbdb1/mysql "
 #ln -s /mnt/usbdb1/mysql /var/www/
 #echo "created sybolic link folder for database drive $answ "
 echo "Mounted $answ to /mnt/usbdb1 and migrated MariaDB data"
