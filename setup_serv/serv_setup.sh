@@ -76,6 +76,7 @@ mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
 mv /var/www/html/index.html /var/www/index.html
 rm -rf /var/www/html/
 mv /opt/wpdef-serv.conf /etc/nginx/conf.d
+sed -i "s+domain.dns;+$domain;+gi" /etc/nginx/conf.d/wpdef-serv.conf
 rm -rf /etc/nginx/default.conf
 sudo systemctl restart nginx
 clear
