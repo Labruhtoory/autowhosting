@@ -243,6 +243,7 @@ cd unit/
 ./configure --state=/var/lib/unit --log=/var/log/unit.log --control=unix:/run/control.unit.sock --prefix=/usr/local/ --openssl
 ./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
 make && make install 
+cd
 clear
 ##############################    Closing Comments   ##############################
 echo " don't forget to add a cron job 'sudo certbot renew'"
