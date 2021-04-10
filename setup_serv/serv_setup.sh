@@ -1,5 +1,5 @@
 #!/bin/bash
-#initial comments
+##############################  Initial comments  ##############################
 clear
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
 echo ""
