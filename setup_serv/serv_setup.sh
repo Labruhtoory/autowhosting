@@ -4,7 +4,7 @@ clear
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
 echo ""
 echo "Before you begin, make sure that you keep track of your credentials that you setup....."
-echo "Keep in mind, you will need to supply your own credentials and information for the following services....."
+echo "Keep in mind, you will need to supply your own credentials and information for the following services:"
 echo ""
 echo "MariaDB (MySQL):"
 echo "  > Your system/server root account password for creating and configuring the root database account"
@@ -12,10 +12,10 @@ echo "  > A username to create a new user for accessing the new wordpress databa
 echo "  > A password for this new user"
 echo ""
 echo ""
-echo ""
-echo ""
-echo ""
-echo ""
+echo "CertBot (SSL cert&key generator):"
+echo "  > A valid email address in case verification is needed"
+echo "  > A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com"
+echo "  "
 echo ""
 echo ""
 echo "Press 'c' to continue....."
@@ -34,15 +34,50 @@ echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server mariadb-client mongodb-server
 sudo python3 -m pip install --upgrade pip
 clear
-echo "making some slight adjustments to nginx"
-systemctl enable nginx && systemctl restart nginx
-mv /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
-rm -rf /etc/nginx/sites-enabled/default
-systemctl restat nginx
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
 mv serv-confs-defaults/wpdef-serv.conf /opt/
 cd /var/www/
+clear
+##############################    SSL Cert and Key Gen    ##############################
+#ssl certbot
+echo "Installing CertBot....."
+echo "Making some slight adjustments to nginx"
+systemctl enable nginx && systemctl restart nginx
+mv /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
+rm -rf /etc/nginx/sites-enabled/default
+systemctl restat nginx
+read -p "What domain name would you like to use for your website?> " $domain
+sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
+sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
+mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
+systemctl restart nginx                       
+sudo apt-get install -fy software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install -fy python-certbot-nginx
+sudo apt remove -fy apache2-data
+clear
+echo "In a separate terminal, run the following....."
+echo ""
+echo "sudo certbot --nginx"
+echo ""
+echo "press c to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+echo ""
+printf "Ok then, moving on....."
+break
+fi
+done
+mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
+mv /var/www/html/index.html /var/www/index.html
+rm -rf /var/www/html/
+mv /opt/wpdef-serv.conf /etc/nginx/conf.d
+rm -rf /etc/nginx/default.conf
+sudo systemctl restart nginx
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
@@ -84,14 +119,17 @@ ln -s /dbs/mysql /var/www/
 echo "created sybolic link folder for database drive $answ in /var/www"
 echo "Mounted $answ to /dbs and migrated MariaDB data"
 clear
-echo "setting up initial mysql wordpress database"
-echo "Enter your system root account passwd in the prompt below."
+echo "Setting up initial mysql wordpress database....."
+echo ""
+echo "Enter your system (or MySQL, if you updated the root password) root account passwd in the prompt below."
 echo "After that, run the folowing quieries in the mysql> prompt.....and leave quotes and ticks in commands!"
+echo ""
 echo "CREATE DATABASE wordpress;"
 echo "CREATE USER newuserhere IDENTIFIED BY 'newpasswordhere';"
 echo "GRANT ALL PRIVILEGES ON wordpress.* TO newuserhere;"
 echo "FLUSH PRIVILEGES;"
 echo "EXIT"
+echo ""
 sudo mysql -u root -p
 clear
 ##############################    MongoDB (NoSQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
@@ -103,10 +141,12 @@ mv /var/lib/mongodb /var/lib/mongodb.bak
 cat /etc/mongodb.conf | grep --color dbpath
 cp /etc/mongodb.conf /etc/mongodb.conf.bak
 sed -i "s+/var/lib/mongodb+/dbs/mongodb+gi" /etc/mongodb.conf
+cat /etc/mongodb.conf | grep --color dbpath
 sudo systemctl start mongodb
 ln -s /dbs/mysql /var/www/
+clear
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
-echo "Setting up wordpress"
+echo "Setting up wordpress....."
 cd /var/www/
 sudo wget http://wordpress.org/latest.tar.gz
 sudo tar xzvf latest.tar.gz
@@ -117,17 +157,18 @@ sudo cp wp-config-sample.php wp-config.php
 clear
 echo "Editing wordpress mysql config...."
 sed -i "s/database_name_here/wordpress/gi" /var/www/wordpress/wp-config.php
-read -p "What is your new MariaDB (MySQL) username?" unanmer
+read -p "What is your new MariaDB (MySQL) username? " unanmer
 sed -i "s/username_here/$unamer/gi" /var/www/wordpress/wp-config.php
-read -p "What is your new MariaDB (MySQL) password?" passwder
+read -p "What is your new MariaDB (MySQL) password? " passwder
 sed -i "s/password_here/$passwder/gi" /var/www/wordpress/wp-config.php
 clear
 echo "In a separate terminal, make the following changes to /var/www/wordpress/wp-config.php ....."
 echo ""
 echo ""
-echo "Find the KEY lines, EX: define('AUTH_KEY', / define('SECURE_AUTH_KEY'  and enter the values of the genterated salts below"
-echo "copy what is between the single quotes below into its respective place in /var/www/wordpress/wp-config.php"
-echo "(make sure to put it betweensingle quotes)"
+echo "Find the KEY lines, EX: define('AUTH_KEY', / define('SECURE_AUTH_KEY'  and copy the values of the genterated salts below....."
+echo ""
+echo "*NOTE: Copy what is between the single quotes below into its respective 'put your unique phrase here' place in /var/www/wordpress/wp-config.php ....."
+echo "(make sure to put values between single quotes)"
 echo ""
 echo ""
 echo ""
@@ -151,42 +192,6 @@ sudo find /var/www/wordpress -type d -exec chmod g+s {} \;
 sudo chmod g+w /var/www/wordpress/wp-content
 sudo chmod -R g+w /var/www/wordpress/wp-content/themes
 sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
-##############################    SSL Cert and Key Gen    ##############################
-#ssl certbot
-echo "Installing CertBot....."
-echo ""
-read -p "What domain name would you like to use for your website?> " $domain
-sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
-sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
-mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
-systemctl restart nginx                       
-sudo apt-get install -fy software-properties-common
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-sudo apt-get install -fy python-certbot-nginx
-sudo apt remove -fy apache2-data
-clear
-echo "In a separate terminal, run the following....."
-echo ""
-echo "sudo certbot --nginx"
-echo ""
-echo"press c to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
-mv /var/www/html/index.html /var/www/index.html
-rm -rf /var/www/html/
-mv /opt/wpdef-serv.conf /etc/nginx/conf.d
-rm -rf /etc/nginx/default.conf
-sudo systemctl restart nginx
-clear
 ##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
 echo "Getting a free vpn config file from vpnbook.com/freevpm....."
 sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
