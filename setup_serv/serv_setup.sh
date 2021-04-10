@@ -52,7 +52,7 @@ sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
 mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
-systemctl restart nginx                       
+systemctl restart nginx
 sudo apt-get install -fy software-properties-common
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
@@ -209,10 +209,8 @@ cd /opt/
 sudo apt install -fy php php7.2-cgi php7.0 mongodb
 sudo apt remove -y apache2 apache2-utils
 clear
-
-                                           
-                                           
-                                           
+            
+              
                                            ###   need to figure out installing nginx unit
 
 echo "Installing nginx unit for wordpress....."
