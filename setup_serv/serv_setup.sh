@@ -47,8 +47,8 @@ systemctl enable nginx && systemctl restart nginx
 mv /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
 rm -rf /etc/nginx/sites-enabled/default
 systemctl restat nginx
-read -p "What domain name would you like to use for your website?> " $domain
 sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+read -p "What domain name would you like to use for your website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
 mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
