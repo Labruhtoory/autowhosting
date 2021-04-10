@@ -10,7 +10,8 @@ printf "Ok then, moving on....."
 break
 fi
 done
-cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
+echo "Installing packages....."
+cd /opt/ && sudo apt update &> /dev/null&& sudo apt install -fy git htop &> /dev/null && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
 clear
 ##############################  Initial comments  ##############################
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
@@ -43,9 +44,9 @@ clear
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs, and Copying Templates for Configs    ##############################
-sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server mariadb-client mongodb-server
-sudo python3 -m pip install --upgrade pip
-clear
+echo "Installing packages....."
+sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server mariadb-client mongodb-server &> /dev/null
+sudo python3 -m pip install --upgrade pip &> /dev/null
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
 mv serv-confs-defaults/wpdef-serv.conf /opt/
@@ -64,11 +65,11 @@ read -p "What domain name would you like to use for your website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
 systemctl restart nginx
-sudo apt-get install -fy software-properties-common
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-sudo apt-get install -fy python-certbot-nginx
-sudo apt remove -fy apache2-data
+sudo apt-get install -fy software-properties-common &> /dev/null
+sudo add-apt-repository ppa:certbot/certbot &> /dev/null
+sudo apt-get update &> /dev/null
+sudo apt-get install -fy python-certbot-nginx &> /dev/null
+sudo apt remove -fy apache2-data &> /dev/null
 clear
 echo "In a separate terminal, run the following....."
 echo ""
@@ -117,12 +118,13 @@ clear
 ##############################    MariaDB (MySQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
-sudo rsync -rltDvz /var/lib/mysql /dbs
-sudo chown -R mysql:mysql /dbs/mysql
+sudo rsync -rltDvz /var/lib/mysql /dbs &> /dev/null
+sudo chown -R mysql:mysql /dbs/mysql 
 mv /var/lib/mysql /var/lib/mysql.bak
 sudo grep -R --color datadir /etc/mysql/*
 cp /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf.bak
 sed -i "s+/var/lib/mysql+/dbs/mysql+gi" /etc/mysql/mariadb.conf.d/50-server.cnf
+sudo grep -R --color datadir /etc/mysql/*
 sudo systemctl start mariadb
 clear
 echo "Make sure you know your root user passwd, if you dont, then run 'sudo passwd root' in a separate terminal"
@@ -147,7 +149,7 @@ clear
 ##############################    MongoDB (NoSQL) Install and Data Migration   ##############################
 echo "Migrating Mongo data to mounted disk....."
 sudo systemctl stop mongodb
-sudo rsync -rltDvz /var/lib/mongodb /dbs
+sudo rsync -rltDvz /var/lib/mongodb /dbs &> /dev/null
 sudo chown mongodb:mongodb -R /dbs/mongodb/
 mv /var/lib/mongodb /var/lib/mongodb.bak
 cat /etc/mongodb.conf | grep --color dbpath
@@ -160,7 +162,7 @@ clear
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
 echo "Setting up wordpress....."
 cd /var/www/
-sudo wget http://wordpress.org/latest.tar.gz
+sudo wget http://wordpress.org/latest.tar.gz &> /dev/null
 sudo tar xzvf latest.tar.gz
 rm -rf latest.tar.gz
 mv /opt/wordpress.config /var/www/wordpress/
@@ -207,20 +209,20 @@ clear
 ##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
 cd /opt/
 echo "Getting a free vpn config file from vpnbook.com/freevpm....."
-sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
+sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip &> /dev/null
 unzip VPNBook.com-OpenVPN-US2.zip
 sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
 clear
 echo "installing a dns leak test, run by commad 'dnsleaktest'"
-git clone https://github.com/macvk/dnsleaktest.git
-go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
+git clone https://github.com/macvk/dnsleaktest.git &> /dev/null
+go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go &> /dev/null
 chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
 clear
 ##############################    NGINX Unit Source, Config, Build, and Install     ##############################
 cd /opt/
-sudo apt install -fy php php7.2-cgi php7.0
-sudo apt remove -y apache2 apache2-utils
+sudo apt install -fy php php7.2-cgi php7.0 &> /dev/null
+sudo apt remove -y apache2 apache2-utils &> /dev/null
 rm -rf /var/www/html/index.html
 clear
             
@@ -233,12 +235,13 @@ echo "Installing nginx unit for wordpress....."
 
 cd /opt/
 # nginx unit source download, compilation, and install 
-sudo apt install -fy build-essential golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev
-curl -sL https://deb.nodesource.com/setup_12.x | bash -
-sudo apt install -fy nodejs
-npm install -g node-gyp
-git clone https://github.com/nginx/unit.git
+sudo apt install -fy build-essential golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
+curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
+sudo apt install -fy nodejs &> /dev/null
+npm install -g node-gyp &> /dev/null
+git clone https://github.com/nginx/unit.git &> /dev/null
 cd unit/
+echo "Configuring Unit....."
 ./configure --state=/var/lib/unit --log=/var/log/unit.log --control=unix:/run/control.unit.sock --prefix=/usr/local/ --openssl
 ./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
 make && make install 
