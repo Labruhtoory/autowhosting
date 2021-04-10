@@ -211,7 +211,6 @@ sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VP
 unzip VPNBook.com-OpenVPN-US2.zip
 sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
 clear
-#dns leak test
 echo "installing a dns leak test, run by commad 'dnsleaktest'"
 git clone https://github.com/macvk/dnsleaktest.git
 go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
