@@ -35,10 +35,12 @@ sudo python3 -m pip install --upgrade pip
 clear
 echo "making some slight adjustments to nginx"
 systemctl enable nginx && systemctl restart nginx
-sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
+mv /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
+rm -rf /etc/nginx/sites-enabled/default
+systemctl restat nginx
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
+mv serv-confs-defaults/wpdef-serv.conf /opt/
 cd /var/www/
 clear
 ##############################    DB DataDrive Setup ##############################
@@ -64,11 +66,12 @@ sudo mount /dev/$answ /dbs
 echo "/dev/$answ        /dbs        ext4    defaults      0      0" >> /etc/fstab
 echo "Ok, /dev/$answ with ext4 filsystem is prepped for mounting on boot"
 clear
-##############################    MariaDB (MySQL) for Wordpress Install, Setup, Data Migration, and Config   ##############################
+##############################    MariaDB (MySQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
 sudo rsync -rltDvz /var/lib/mysql /dbs
-sudo chown -R mysql:mysql /dbs/
+sudo chown -R mysql:mysql /dbs/mysql
+mv /var/lib/mysql /var/lib/mysql.bak
 sudo grep -R --color datadir /etc/mysql/*
 cp /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf.bak
 sed -i "s+/var/lib/mysql+/dbs/mysql+gi" /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -76,7 +79,7 @@ sudo systemctl start mariadb
 clear
 echo "Make sure you know your root user passwd, if you dont, then run 'sudo passwd root' in a separate terminal"
 sudo mysql_secure_installation
-ln -s /dbs/ /var/www/
+ln -s /dbs/mysql /var/www/
 echo "created sybolic link folder for database drive $answ in /var/www"
 echo "Mounted $answ to /dbs and migrated MariaDB data"
 clear
@@ -90,8 +93,17 @@ echo "FLUSH PRIVILEGES;"
 echo "EXIT"
 sudo mysql -u root -p
 clear
-##############################    MongoDB (NoSQL) for Wordpress Install, Setup, Data Migration, and Config   ##############################
-
+##############################    MongoDB (NoSQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
+echo "Migrating Mongo data to mounted disk....."
+sudo systemctl stop mongodb
+sudo rsync -rltDvz /var/lib/mongodb /dbs
+sudo chown mongodb:mongodb -R /dbs/mongodb/
+mv /var/lib/mongodb /var/lib/mongodb.bak
+cat /etc/mongodb.conf | grep --color dbpath
+cp /etc/mongodb.conf /etc/mongodb.conf.bak
+sed -i "s+/var/lib/mongodb+/dbs/mongodb+gi" /etc/mongodb.conf
+sudo systemctl start mongodb
+ln -s /dbs/mysql /var/www/
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
 echo "Setting up wordpress"
 cd /var/www/
@@ -103,15 +115,6 @@ cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 clear
 echo "Editing wordpress mysql config...."
-
-
-
-
-
-
-
-
-
 sed -i "s/database_name_here/wordpress/gi" /var/www/wordpress/wp-config.php
 read -p "What is your new MariaDB (MySQL) username?" unanmer
 sed -i "s/username_here/$unamer/gi" /var/www/wordpress/wp-config.php
@@ -147,6 +150,54 @@ sudo find /var/www/wordpress -type d -exec chmod g+s {} \;
 sudo chmod g+w /var/www/wordpress/wp-content
 sudo chmod -R g+w /var/www/wordpress/wp-content/themes
 sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
+##############################    SSL Cert and Key Gen    ##############################
+#ssl certbot
+echo "Installing CertBot....."
+echo ""
+read -p "What domain name would you like to use for your website?> " $domain
+sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
+sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
+mv /var/www/html/index.nginx-debian.html /var/www/index.nginx-debian.html
+systemctl restart nginx                       
+sudo apt-get install -fy software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install -fy python-certbot-nginx
+sudo apt remove -fy apache2-data
+clear
+echo "In a separate terminal, run the following....."
+echo ""
+echo "sudo certbot --nginx"
+echo ""
+echo"press c to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+echo ""
+printf "Ok then, moving on....."
+break
+fi
+done
+mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
+mv /var/www/html/index.html /var/www/index.html
+rm -rf /var/www/html/
+mv /opt/wpdef-serv.conf /etc/nginx/conf.d
+rm -rf /etc/nginx/default.conf
+sudo systemctl restart nginx
+clear
+##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
+echo "Getting a free vpn config file from vpnbook.com/freevpm....."
+sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
+unzip VPNBook.com-OpenVPN-US2.zip
+sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
+clear
+#dns leak test
+echo "installing a dns leak test, run by commad 'dnsleaktest'"
+git clone https://github.com/macvk/dnsleaktest.git
+go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
+chmod 755 /usr/bin/dnsleaktest
+rm -rf dnsleaktest/
 ##############################    NGINX Unit Source, Config, Build, and Install     ##############################
 cd /opt/
 sudo apt install -fy php php7.2-cgi php7.0 mongodb
@@ -175,47 +226,6 @@ cd unit/
 ./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
 make && make install 
 clear
-##############################    SSL Cert and Key Gen    ##############################
-#ssl certbot
-echo "Installing CertBot....."
-echo ""
-read -p "What domain name would you like to use for your website?> " $domain
-
-                                        ###   this left a blank space
-
-sed -i "s/domain.dns/$domain/gi" /etc/nginx/conf.d/wpdef-serv.conf
-
-
-                                        ### install certbot in the beginning of the script
-                                        ### and, edit nginx .conf template bc certbot threw an error
-                            ### Error while running nginx -c /etc/nginx/nginx.conf -t.
-                            ### nginx: [emerg] open() "/etc/letsencrypt/options-ssl-nginx.conf" failed (2: No such file or directory) in /etc/nginx/conf.d/wpdef-serv.conf:25
-                            ### nginx: configuration file /etc/nginx/nginx.conf test failed
-                            ###
-                            
-                            
-sudo apt-get install -fy software-properties-common
-sudo add-apt-repository ppa:certbot/certbot
-sudo apt-get update
-sudo apt-get install -fy python-certbot-nginx
-sudo apt remove -fy apache2-data
-mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
-mv /var/www/html/index.html /var/www/index.html
-rm -rf /var/www/html/
-sudo systemctl restart nginx
-clear
-##############################    Xtra Free Vpn (Optional)    ##############################
-echo "Getting a free vpn config file from vpnbook.com/freevpm....."
-sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
-unzip VPNBook.com-OpenVPN-US2.zip
-sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
-clear
-#dns leak test
-echo "installing a dns leak test, run by commad 'dnsleaktest'"
-git clone https://github.com/macvk/dnsleaktest.git
-go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
-chmod 755 /usr/bin/dnsleaktest
-rm -rf dnsleaktest/
 ##############################    Closing Comments   ##############################
 echo " don't forget to add a cron job 'sudo certbot renew'"
 echo "crontab -e"
