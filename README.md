@@ -1,7 +1,8 @@
 # whost-nginx
  Automated process to set up wordpress website hosting.
  
- Prerquisites.....
+ 
+                                                  Standalone Server Script & Prerquisites.....
  
  *Run as Root (recommended)
  
