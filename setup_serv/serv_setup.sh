@@ -1,7 +1,7 @@
 #!/bin/bash
 #initial comments
 clear
-echo "*Quick note, say yes to and fill out all services' prompts. Just makes the process easier :)"
+echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
 echo ""
 echo "Before you begin, make sure that you keep track of your credentials that you setup....."
 echo "Keep in mind, you will need to supply your own credentials and information for the following services....."
