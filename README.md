@@ -1,5 +1,5 @@
 # whost-nginx
- Automated processes to set up wordpress websites.
+ Automated process to set up wordpress website hosting.
  
  Prerquisites.....
  
