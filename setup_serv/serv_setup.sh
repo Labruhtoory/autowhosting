@@ -12,6 +12,10 @@ sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 mv serv-confs-defaults/wpdef-serv.conf /etc/nginx/conf.d
 clear
 
+#############################################################################################
+#########   REVIEW THAT MYSQL HAS PERMISSIONS TO EXTERNAL DRIVE'S FILESYSTEM    #############
+
+#########   CURRENT THING TO CHECK, CHANGE THE TYPE OF FILESYSTEM OF THE DRIVE (EXT4)   #####
 
 #MariaDB (MySQL) setup
 echo "setting up initial database drive, database support, and support for wordpress....."
@@ -19,7 +23,7 @@ mv wordpress.config /opt/
 cd /var/www/
 mkdir /mnt/usbdb1
 echo "Please insert a drive with only one empty partition....."
-echo "Have you plugged in a usb device? If not, now is the time to do it....."
+echo "Have you plugged in a device? If not, now is the time to do it....."
 echo "Press 'c' to continue....."
 while : ; do
 read -n 1 k <&1
@@ -29,16 +33,59 @@ break
 fi
 done
 lsblk | grep "disk\|part"
-echo -n "What is the new partition name to mount?"
+echo -n "What is the new partition to mount? (EX: sda1, sda2, sdb1 etc.....): "
 read answ
+
+
+
+mkfs.ext4 /dev/$answ
+
+
+
 echo "mounting $answ"
-mkdir /mnt/usbdb1/
-mount /dev/$answ /mnt/usbdb1/
+sudo mkdir /dbs
+sudo chown -R mysql:mysql /dbs/
+sudo mount /dev/$answ /dbs
+df -Th | grep $answ
+read -p "What kind of file system is the mounted drive? (EX: ext4, exfat, fat32, vfat etc.....): " answ2
+echo "In a separate terminal, edit /etc/fstab and add the following line....."
+echo "/dev/$answ        /dbs        $answ2    defaults      0      0"
+"Press 'c' to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+printf "Ok then, moving on....."
+break
+fi
+done
+echo "Ok, /dev/$answ with filsystem $answ2 is prepped for mounting on boot"
 clear
 
-echo "setting up initial mysql wordpress database"
+echo "Migrating MariaDB data to mounted disk. make sure you know your root passwd, if you dont, then run: sudo passwd root"
 sudo mysql_secure_installation
+sudo systemctl stop mariadb
+sudo rsync -rltDvz /var/lib/mysql /dbs
+#cp -R /var/lib/mysql
+
+
+chmod -R 777 /dbs
+chmod -R 777 /var/lib/mysql
+sudo chown -R mysql:mysql /dbs
+sudo chown -R mysql:mysql /var/lib/mysql
+mysql -u root -p
+# \! cp -R /var/lib/mysql /dbs
+
+
+echo "In a sparate terminal, edit: /etc/mysql/mariadb.conf.d/50-server.cnf..."
+echo "Change datadir to /dbs "
+sudo systemctl start mariadb
+#ln -s /mnt/usbdb1/mysql /var/www/
+#echo "created sybolic link folder for database drive $answ "
+echo "Mounted $answ to /dbs and migrated MariaDB data"
 clear
+
+#############################################################################################
+echo "setting up initial mysql wordpress database"
 echo "Now enter your MYSQL root passwd in the prompt below."
 echo "Run the folowing commands in the mysql> prompt: "
 echo "CREATE DATABASE wordpress;"
@@ -48,16 +95,6 @@ echo "FLUSH PRIVILEGES;"
 echo "EXIT"
 sudo mysql -u root -p
 clear
-
-echo "Migrating MariaDB data to mounted disk"
-sudo systemctl stop mariadb
-sudo rsync -rltDvz /var/lib/mysql /mnt/usbdb1/
-sudo cp -r /var/lib/mysql /var/lib/mysql.bak
-echo "In a sparate terminal, edit: /etc/mysql/mariadb.conf.d/50-server.cnf..."
-echo "Change datadir to /mnt/usbdb1/mysql "
-#ln -s /mnt/usbdb1/mysql /var/www/
-#echo "created sybolic link folder for database drive $answ "
-echo "Mounted $answ to /mnt/usbdb1 and migrated MariaDB data"
 clear
 
 
