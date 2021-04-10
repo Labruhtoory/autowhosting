@@ -30,7 +30,7 @@ clear
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs, and Copying Templates for Configs    ##############################
-sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server
+sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server mariadb-client mongodb-server
 sudo python3 -m pip install --upgrade pip
 clear
 echo "making some slight adjustments to nginx"
