@@ -32,6 +32,11 @@ echo "  > A resitered domain name for configuring Nginx DNS handling EX: myaweso
 echo "  "
 echo ""
 echo ""
+echo ""
+echo ""
+echo "You will also need to edit certain files. To make this easier, you will be provided instructions when needed."
+echo ""
+echo ""
 echo "Press 'c' to continue....."
 while : ; do
 read -n 1 k <&1
