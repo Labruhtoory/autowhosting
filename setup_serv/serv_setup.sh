@@ -72,6 +72,7 @@ rm -rf /etc/nginx/sites-enabled/default
 systemctl restat nginx
 sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 read -p "What domain name would you like to use for your website?> " domain
+mkdir /var/www/$domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
 systemctl restart nginx
