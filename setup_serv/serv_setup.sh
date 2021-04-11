@@ -3,7 +3,7 @@
 clear
 echo "Take this time to review your system's state....."
 echo "EX: Is it a fresh install? or Are all services in default, 'factory' settings?"
-"Press Ctrl +c twice to cancel, and 'c' to continue....."
+cho "Press Ctrl +c twice to cancel, and 'c' to continue....."
 while : ; do
 read -n 1 k <&1
 if [[ $k = c ]] ; then
