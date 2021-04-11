@@ -51,7 +51,7 @@ echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 echo "Installing packages....."
 sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip
 sudo python3 -m pip install --upgrade pip
-sudo apt remove -y apache2 apache2-utils
+sudo apt remove -fy apache2 apache2-utils
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
 rm -rf /var/www/html/index.html
 sudo apt install -fy nodejs
