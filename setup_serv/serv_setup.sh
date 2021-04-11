@@ -45,7 +45,7 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs, and Copying Templates for Configs    ##############################
 echo "Installing packages....."
-sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin php-apc unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
+sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
 sudo python3 -m pip install --upgrade pip &> /dev/null
 sudo apt remove -y apache2 apache2-utils &> /dev/null
 curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
@@ -55,6 +55,7 @@ npm install -g node-gyp &> /dev/null
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
 mv serv-confs-defaults/wpdef-serv.conf /opt/
+mv php7.3-wordpress.conf /opt/
 cd /var/www/
 clear
 ##############################    SSL Cert and Key Gen    ##############################
@@ -168,12 +169,26 @@ clear
 echo "Setting up wordpress....."
 cd /var/www/
 sudo wget http://wordpress.org/latest.tar.gz &> /dev/null
-sudo tar xzvf latest.tar.gz
+sudo tar xzvf latest.tar.gz &> /dev/null
 rm -rf latest.tar.gz
+rm -rf /etc/php/7.3/fpm/pool.d/www.conf
 mv /opt/wordpress.config /var/www/wordpress/
+mv /opt/php7.3-wordpress.conf /etc/php/7.3/fpm/pool.d/wordpress.conf
 cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 clear
+echo "Adding wordpress user....."
+echo ""
+echo "Enter whatever information that you want, or just press enter to skip..."
+echo "HOWEVER DO NOT SKIP MAKING A PASSWORD"
+useradd -m wordpress
+passwd wordpress
+mkdir /etc/php/7.3/fpm/sockets
+mkdir /home/wordpress/logs
+chown -R wordpress:wordpress /var/www/wordpress
+clear
+
+
 echo "Editing wordpress mysql config...."
 read -p "What is your new MariaDB (MySQL) username? " utut
 sed -i "s/username_here/$utut/gi" /var/www/wordpress/wp-config.php
@@ -183,7 +198,10 @@ clear
 echo "In a separate terminal, make the following changes to /var/www/wordpress/wp-config.php ....."
 echo ""
 echo ""
-echo "Find the KEY lines, EX: define('AUTH_KEY', / define('SECURE_AUTH_KEY'  and copy the values of the genterated salts below....."
+echo "Find "
+echo ""
+echo ""
+echo "Just below, Find the KEY lines, EX: define('AUTH_KEY', / define('SECURE_AUTH_KEY'  and copy the values of the genterated salts below....."
 echo ""
 echo "*NOTE: Copy what is between the single quotes below into its respective 'put your unique phrase here' place in /var/www/wordpress/wp-config.php ....."
 echo "(make sure to put values between single quotes)"
