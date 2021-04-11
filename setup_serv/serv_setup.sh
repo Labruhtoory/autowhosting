@@ -45,8 +45,13 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs, and Copying Templates for Configs    ##############################
 echo "Installing packages....."
-sudo apt install -fy python python3 python3-pip golang speedtest-cli htop nginx mariadb-server mariadb-client mongodb-server &> /dev/null
+sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin php-apc unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
 sudo python3 -m pip install --upgrade pip &> /dev/null
+sudo apt remove -y apache2 apache2-utils &> /dev/null
+curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
+rm -rf /var/www/html/index.html
+sudo apt install -fy nodejs &> /dev/null
+npm install -g node-gyp &> /dev/null
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
 mv serv-confs-defaults/wpdef-serv.conf /opt/
@@ -221,13 +226,6 @@ rm -rf dnsleaktest/
 clear
 ##############################    NGINX Unit Source, Config, Build, and Install     ##############################
 #echo "Installing nginx unit for wordpress....."
-#cd /opt/
-#sudo apt install -fy  php php7.2-cgi php7.0 build-essential golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
-#sudo apt remove -y apache2 apache2-utils &> /dev/null
-#curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
-#rm -rf /var/www/html/index.html
-#sudo apt install -fy nodejs &> /dev/null
-#npm install -g node-gyp &> /dev/null
 #
 # nginx unit source download, compilation, and install   ###   need to figure out installing nginx unit
 #git clone https://github.com/nginx/unit.git &> /dev/null
