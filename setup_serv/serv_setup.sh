@@ -157,7 +157,7 @@ echo ""
 sudo mysql -u root -p
 clear
 ##############################    MongoDB (NoSQL) Install and Data Migration   ##############################
-echo "Migrating Mongo data to mounted disk....."
+echo "Migrating Mongodb data to mounted disk....."
 sudo systemctl stop mongodb
 sudo rsync -rltDvz /var/lib/mongodb /dbs
 sudo chown mongodb:mongodb -R /dbs/mongodb/
