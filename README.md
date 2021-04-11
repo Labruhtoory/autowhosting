@@ -2,7 +2,7 @@
  Automated process to set up wordpress website hosting.
  
  
-                                             Standalone Server Script & Prerquisites.....
+                         Standalone Server Script & Prerquisites.....
  
  *Run as Root (recommended)
  
