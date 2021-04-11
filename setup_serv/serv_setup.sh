@@ -2,8 +2,8 @@
 #init
 clear
 echo "Take this time to review your system's state....."
-echo "EX: Is it a fresh install? or Are all services in default, 'factory' settings?"
-echo "Press Ctrl +c twice to cancel, and 'c' to continue....."
+echo "EX: Is it a fresh install? Are all services in an acceptable default, 'factory' settings?"
+echo "Press 'Ctrl + c' twice to cancel if needed, or 'c' to continue....."
 while : ; do
 read -n 1 k <&1
 if [[ $k = c ]] ; then
@@ -11,9 +11,6 @@ printf "Ok then, moving on....."
 break
 fi
 done
-echo "Installing packages....."
-cd /opt/ && sudo apt update &> /dev/null&& sudo apt install -fy git htop &> /dev/null && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
-clear
 ##############################  Initial comments  ##############################
 echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
 echo ""
@@ -51,13 +48,13 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs, and Copying Templates for Configs    ##############################
 echo "Installing packages....."
-sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
-sudo python3 -m pip install --upgrade pip &> /dev/null
-sudo apt remove -y apache2 apache2-utils &> /dev/null
-curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
+sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip
+sudo python3 -m pip install --upgrade pip
+sudo apt remove -y apache2 apache2-utils
+curl -sL https://deb.nodesource.com/setup_12.x | bash -
 rm -rf /var/www/html/index.html
-sudo apt install -fy nodejs &> /dev/null
-npm install -g node-gyp &> /dev/null
+sudo apt install -fy nodejs
+npm install -g node-gyp
 go get github.com/gorilla/websocket
 mv wordpress.config /opt/
 mv serv-confs-defaults/wpdef-serv.conf /opt/
@@ -77,11 +74,11 @@ read -p "What domain name would you like to use for your website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
 sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
 systemctl restart nginx
-sudo apt-get install -fy software-properties-common &> /dev/null
-sudo add-apt-repository ppa:certbot/certbot &> /dev/null
-sudo apt-get update &> /dev/null
-sudo apt-get install -fy python-certbot-nginx &> /dev/null
-sudo apt remove -fy apache2-data &> /dev/null
+sudo apt-get install -fy software-properties-common
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt-get update
+sudo apt-get install -fy python-certbot-nginx
+sudo apt remove -fy apache2-data
 clear
 echo "In a separate terminal, run the following....."
 echo ""
@@ -130,7 +127,7 @@ clear
 ##############################    MariaDB (MySQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
-sudo rsync -rltDvz /var/lib/mysql /dbs &> /dev/null
+sudo rsync -rltDvz /var/lib/mysql /dbs
 sudo chown -R mysql:mysql /dbs/mysql 
 mv /var/lib/mysql /var/lib/mysql.bak
 sudo grep -R --color datadir /etc/mysql/*
@@ -161,7 +158,7 @@ clear
 ##############################    MongoDB (NoSQL) Install and Data Migration   ##############################
 echo "Migrating Mongo data to mounted disk....."
 sudo systemctl stop mongodb
-sudo rsync -rltDvz /var/lib/mongodb /dbs &> /dev/null
+sudo rsync -rltDvz /var/lib/mongodb /dbs
 sudo chown mongodb:mongodb -R /dbs/mongodb/
 mv /var/lib/mongodb /var/lib/mongodb.bak
 cat /etc/mongodb.conf | grep --color dbpath
@@ -174,8 +171,8 @@ clear
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
 echo "Setting up wordpress....."
 cd /var/www/
-sudo wget http://wordpress.org/latest.tar.gz &> /dev/null
-sudo tar xzvf latest.tar.gz &> /dev/null
+sudo wget http://wordpress.org/latest.tar.gz
+sudo tar xzvf latest.tar.gz
 rm -rf latest.tar.gz
 rm -rf /etc/php/7.3/fpm/pool.d/www.conf
 mv /opt/wordpress.config /var/www/wordpress/
@@ -238,13 +235,13 @@ clear
 ##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
 cd /opt/
 echo "Getting a free vpn config file from vpnbook.com/freevpm....."
-sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip &> /dev/null
+sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
 unzip VPNBook.com-OpenVPN-US2.zip
 sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
 clear
 echo "installing a dns leak test, run by commad 'dnsleaktest'"
-git clone https://github.com/macvk/dnsleaktest.git &> /dev/null
-go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go &> /dev/null
+git clone https://github.com/macvk/dnsleaktest.git
+go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
 chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
 clear
@@ -252,7 +249,7 @@ clear
 #echo "Installing nginx unit for wordpress....."
 #
 # nginx unit source download, compilation, and install   ###   need to figure out installing nginx unit
-#git clone https://github.com/nginx/unit.git &> /dev/null
+#git clone https://github.com/nginx/unit.git
 #cd unit/
 #echo "Configuring Unit....."                                          
 #                                                 
