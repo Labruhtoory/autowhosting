@@ -183,8 +183,7 @@ sudo cp wp-config-sample.php wp-config.php
 clear
 echo "Adding wordpress user....."
 echo ""
-echo "Enter whatever information that you want, or just press enter to skip..."
-echo "HOWEVER DO NOT SKIP MAKING A PASSWORD"
+echo "Enter a password for the new wordpress user to have..."
 useradd -m wordpress
 passwd wordpress
 mkdir /etc/php/7.3/fpm/sockets
