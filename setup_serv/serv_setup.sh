@@ -2,7 +2,7 @@
 #init
 clear
 echo "Take this time to review your system's state....."
-echo "EX: Is it a fresh install? Are all services in an acceptable default, 'factory' settings?"
+echo "EX: Is it a fresh install? Are all services in acceptable default, 'factory' settings?"
 echo "Press 'Ctrl + c' twice to cancel if needed, or 'c' to continue....."
 while : ; do
 read -n 1 k <&1
