@@ -1,5 +1,6 @@
 #!/bin/bash
 #init
+clear
 echo "Take this time to review your system's state....."
 echo "EX: Is it a fresh install? or Are all services in default, 'factory' settings?"
 "Press Ctrl +c twice to cancel, and 'c' to continue....."
