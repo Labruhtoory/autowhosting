@@ -47,30 +47,19 @@ clear
 ##############################   Networking   ##############################
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
-##############################   Init Installs, and Copying Templates for Configs    ##############################
+##############################   Init Installs    ##############################
 echo "Installing packages....."
 sudo apt install -fy speedtest-cli htop nginx nginx-common nginx-full software-properties-common python-certbot-nginx mariadb-server mariadb-client mongodb-server texlive-latex-base a2ps haskell-platform build-essential python python3 python3-pip golang openssl php-dev libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cgi php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip
 sudo python3 -m pip install --upgrade pip
 sudo apt remove -fy apache2 apache2-utils apache2-data
 curl -sL https://deb.nodesource.com/setup_12.x | bash -
-rm -rf /var/www/html/index.html
 sudo apt install -fy nodejs
 npm install -g node-gyp
 go get github.com/gorilla/websocket
-mv wordpress.config /opt/
-mv serv-confs-defaults/wpdef-serv.conf /opt/
-mv php7.3-wordpress.conf /opt/
-cd /var/www/
 clear
 ##############################    SSL Cert and Key Gen    ##############################
 #ssl certbot
 echo "Installing CertBot....."
-echo "Making some slight adjustments to nginx"
-systemctl enable nginx && systemctl restart nginx
-mv /etc/nginx/sites-available/default /etc/nginx/conf.d/default.conf
-rm -rf /etc/nginx/sites-enabled/default
-systemctl restat nginx
-sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 read -p "What domain name would you like to use for your website?> " domain
 mkdir /var/www/$domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
@@ -90,12 +79,7 @@ printf "Ok then, moving on....."
 break
 fi
 done
-mv /var/wwww/html/index.nginx-debian.html /var/www/html/index.html
-mv /var/www/html/index.html /var/www/index.html
-rm -rf /var/www/html/
-mv /opt/wpdef-serv.conf /etc/nginx/conf.d
 sed -i "s+domain.dns;+$domain;+gi" /etc/nginx/conf.d/wpdef-serv.conf
-rm -rf /etc/nginx/default.conf
 sudo systemctl restart nginx
 clear
 ##############################    DB DataDrive Setup ##############################
@@ -172,8 +156,8 @@ sudo wget http://wordpress.org/latest.tar.gz
 sudo tar xzvf latest.tar.gz
 rm -rf latest.tar.gz
 rm -rf /etc/php/7.3/fpm/pool.d/www.conf
-mv /opt/wordpress.config /var/www/wordpress/
-mv /opt/php7.3-wordpress.conf /etc/php/7.3/fpm/pool.d/wordpress.conf
+#mv /opt/wordpress.config /var/www/wordpress/
+#/opt/php7.3-wordpress.conf /etc/php/7.3/fpm/pool.d/wordpress.conf
 cd /var/www/wordpress
 sudo cp wp-config-sample.php wp-config.php
 clear
