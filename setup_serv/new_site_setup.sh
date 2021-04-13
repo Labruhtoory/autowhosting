@@ -48,13 +48,33 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs    ##############################
 echo "Installing packages....."
-sudo apt update && sudo apt install -fy speedtest-cli htop nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server build-essential python python3 python3-pip golang openssl
-sudo python3 -m pip install --upgrade pip
-sudo apt remove -fy apache2 apache2-utils apache2-data
-curl -sL https://deb.nodesource.com/setup_12.x | bash -
-sudo apt install -fy nodejs
-npm install -g node-gyp
-go get github.com/gorilla/websocket
+echo "[+]"
+sudo apt update && sudo apt install -fy speedtest-cli htop &> /dev/null
+echo "[+]"
+apt install -fy nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server &> /dev/null
+echo "[+]"
+apt install -fy build-essential python python3 python3-pip golang openssl libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
+echo "[+]"
+apt install -fy phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev &> /dev/null
+echo "[+]"
+apt install -fy php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-imagick php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring &> /dev/null
+echo "[+]"
+apt install -fy php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap &> /dev/null
+echo "[+]"
+apt install -fy php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
+echo "[+]"
+sudo python3 -m pip install --upgrade pip &> /dev/null
+echo "[+]"
+sudo apt remove -fy apache2 apache2-utils apache2-data &> /dev/null
+echo "[+]"
+curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
+echo "[+]"
+sudo apt install -fy nodejs &> /dev/null
+echo "[+]"
+npm install -g node-gyp &> /dev/null
+echo "[+]"
+go get github.com/gorilla/websocket &> /dev/null
+echo "[+]"
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
@@ -90,9 +110,6 @@ cp /etc/mysql/mariadb.conf.d/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.c
 sed -i "s+/var/lib/mysql+/dbs/mysql+gi" /etc/mysql/mariadb.conf.d/50-server.cnf
 sudo grep -R --color datadir /etc/mysql/*
 sudo systemctl start mariadb
-clear
-echo "Make sure you know your root user passwd, if you dont, then run 'sudo passwd root' in a separate terminal"
-sudo mysql_secure_installation
 ln -s /dbs/mysql /var/www/
 echo "created sybolic link folder for database drive $answ in /var/www"
 echo "Mounted $answ to /dbs and migrated MariaDB data"
@@ -114,15 +131,17 @@ clear
 #ssl certbot
 echo "Installing CertBot....."
 read -p "What domain name would you like to use for your website?> " domain
-sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
+sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
 mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
 systemctl restart nginx
 systemctl restart php7.3-fpm
 clear
 echo "In a separate terminal, run the following....."
 echo ""
-echo "sudo certbot --nginx"
+echo "sudo certbot --nginx -d $domain"
 echo ""
+echo "Once done, copy the cert (fullchain.pem) location, and the key (privkey.pem) location....."
+###############################    Choose to continue    ##############################
 echo "press c to continue....."
 while : ; do
 read -n 1 k <&1
@@ -134,8 +153,6 @@ fi
 done
 clear
 ###############################    Service & User init    ##############################
-echo "Installing more packages....."
-apt install -fy libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-imagick php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip
 sudo systemctl start nginx php7.3-fpm monit && sudo systemctl enable mysql nginx php7.3-fpm monit
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mkdir -p /usr/share/nginx/cache/fcgi
@@ -164,7 +181,8 @@ rm /etc/php/7.3/fpm/pool.d/www.conf
 sudo -u wordy touch /home/wordy/logs/phpfpm_error.log
 clear
 echo "Setting up mysql....."
-echo "Make a new or duplicate root passwd and answer Y to the following prompts....."
+echo "Make sure you know your root user passwd, if you dont, then run 'sudo passwd root' in a separate terminal"
+echo "Answer Y to the following prompts....."
 mysql_secure_installation
 systemctl restart mysql
 clear
