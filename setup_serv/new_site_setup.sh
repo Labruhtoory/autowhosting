@@ -182,6 +182,7 @@ wget https://wordpress.org/latest.tar.gz -O /home/wordy/new_site/latest.tar.gz
 tar zxf /home/wordy/new_site/latest.tar.gz
 rm latest.tar.gz
 mv wordpress new_site
+mv new_site/wp-config-sample.php new_site/wp-config.php
 chown -R wordy:www-data /home/wordy/
 cd /home/wordy
 find . -type d -exec chmod 755 {} \;
