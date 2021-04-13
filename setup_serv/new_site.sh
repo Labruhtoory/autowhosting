@@ -43,10 +43,6 @@ mv setup_serv/template/nginx.conf /etc/nginx/
 mv setup_serv/template/php-fpm.conf /etc/php/7.3/fpm/
 mv setup_serv/template/php.ini /etc/php/7.3/fpm/
 mv setup_serv/template/poolserv.conf /etc/php/7.3/fpm/pool.d/
-echo "Seting up new user for website management....."
-echo "In a seperate terminal, run the following 'adduser wordy'"
-echo "All information is optional except for a passwd, remeber it....."
-mkdir -p /home/wordy/logs
 chown wordy:www-data /home/wordy/logs/
 rm /etc/nginx/sites-enabled/default
 rm /etc/php/7.3/fpm/pool.d/www.conf
