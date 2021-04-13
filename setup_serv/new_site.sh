@@ -1,3 +1,4 @@
+#!/bin/bash
 ##############################    SSL Cert and Key Gen    ##############################
 #ssl certbot
 echo "Installing CertBot....."
