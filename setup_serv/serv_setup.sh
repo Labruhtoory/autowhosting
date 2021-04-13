@@ -57,31 +57,6 @@ sudo apt install -fy nodejs
 npm install -g node-gyp
 go get github.com/gorilla/websocket
 clear
-##############################    SSL Cert and Key Gen    ##############################
-#ssl certbot
-echo "Installing CertBot....."
-read -p "What domain name would you like to use for your website?> " domain
-mkdir /var/www/$domain
-sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
-sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
-systemctl restart nginx
-clear
-echo "In a separate terminal, run the following....."
-echo ""
-echo "sudo certbot --nginx"
-echo ""
-echo "press c to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-sed -i "s+domain.dns;+$domain;+gi" /etc/nginx/conf.d/wpdef-serv.conf
-sudo systemctl restart nginx
-clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
 echo "Please insert a drive with the desired (EMPTY) partition to use....."
@@ -105,7 +80,7 @@ sudo mount /dev/$answ /dbs
 echo "/dev/$answ        /dbs        ext4    defaults      0      0" >> /etc/fstab
 echo "Ok, /dev/$answ with ext4 filsystem is prepped for mounting on boot"
 clear
-##############################    MariaDB (MySQL) for Wordpress Install, Data Migration, Setup, and Config   ##############################
+##############################    MariaDB (MySQL) for Wordpress Install & Data Migration   ##############################
 echo "Migrating MariaDB data to mounted disk....."
 sudo systemctl stop mariadb
 sudo rsync -rltDvz /var/lib/mysql /dbs
@@ -123,20 +98,7 @@ ln -s /dbs/mysql /var/www/
 echo "created sybolic link folder for database drive $answ in /var/www"
 echo "Mounted $answ to /dbs and migrated MariaDB data"
 clear
-echo "Setting up initial mysql wordpress database....."
-echo ""
-echo "Enter your system (or MySQL, if you updated the root password) root account passwd in the prompt below."
-echo "After that, run the folowing quieries in the mysql> prompt.....and leave quotes and ticks in commands!"
-echo ""
-echo "CREATE DATABASE wordpress;"
-echo "CREATE USER newuserhere IDENTIFIED BY 'newpasswordhere';"
-echo "GRANT ALL PRIVILEGES ON wordpress.* TO newuserhere;"
-echo "FLUSH PRIVILEGES;"
-echo "EXIT"
-echo ""
-sudo mysql -u root -p
-clear
-##############################    MongoDB (NoSQL) Install and Data Migration   ##############################
+##############################    MongoDB (NoSQL) Install & Data Migration   ##############################
 echo "Migrating Mongodb data to mounted disk....."
 sudo systemctl stop mongodb
 sudo rsync -rltDvz /var/lib/mongodb /dbs
@@ -149,91 +111,87 @@ cat /etc/mongodb.conf | grep --color dbpath
 sudo systemctl start mongodb
 ln -s /dbs/mysql /var/www/
 clear
-##############################    Wordpress Site Init Install, Setup, and Config    ##############################
-echo "Setting up php....."
-echo "In a separate terminal, make the foloowing (recommended) changes to /etc/php/7.3/fpm/php.ini"
-echo "file_uploads = On"
-echo "allow_url_fopen = On"
-echo "memory_limit = 256M"
-echo "upload_max_filesize = 64M"
-echo "cgi.fix_pathinfo = 0"
-echo "upload_max_filesize = 100M"
-echo "max_execution_time = 360"
-echo "date.timezone = America/Chicago"
+##############################    SSL Cert and Key Gen    ##############################
+#ssl certbot
+echo "Installing CertBot....."
+read -p "What will your new website be called?> " website
+read -p "What domain name would you like to use for your website?> " domain
+mkdir /var/www/$domain
+sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
+sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
+systemctl restart nginx
+clear
+echo "In a separate terminal, run the following....."
 echo ""
-echo "Press c to continue....."
+echo "sudo certbot --nginx"
+echo ""
+echo "press c to continue....."
 while : ; do
 read -n 1 k <&1
 if [[ $k = c ]] ; then
+echo ""
 printf "Ok then, moving on....."
 break
 fi
 done
+sed -i "s+domain.dns;+$domain;+gi" /etc/nginx/conf.d/wpdef-serv.conf
+sudo systemctl restart nginx
+clear
+###############################    Service & User init    ##############################
+sudo systemctl start nginx php7.3-fpm monit && sudo systemctl enable mysql nginx php7.3-fpm monit
+cd /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+mkdir -p /usr/share/nginx/cache/fcgi
+nginx -t
+systemctl restart nginx
+mkdir /run/php-fpm
+mv /etc/php/7.3/fpm/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf.bak
+rm /etc/php/7.3/fpm/pool.d/www.conf
+mv /etc/php/7.3/fpm/php.ini /etc/php/7.3/fpm/php.ini.bak
 systemctl restart php7.3-fpm
 clear
-
-echo "Setting up wordpress....."
-cd /var/www/
-sudo wget http://wordpress.org/latest.tar.gz
-sudo tar xzvf latest.tar.gz
-rm -rf latest.tar.gz
-rm -rf /etc/php/7.3/fpm/pool.d/www.conf
-#mv /opt/wordpress.config /var/www/wordpress/
-#/opt/php7.3-wordpress.conf /etc/php/7.3/fpm/pool.d/wordpress.conf
-cd /var/www/wordpress
-sudo cp wp-config-sample.php wp-config.php
+##############################    Wordpress Site Init Install, Setup, and Config    ##############################
+echo "Copying Templates....."
+mv setup_serv/template/new_site.conf /etc/nginx/conf.d/
+mv setup_serv/template/nginx.conf /etc/nginx/
+mv setup_serv/template/php-fpm.conf /etc/php/7.3/fpm/
+mv setup_serv/template/php.ini /etc/php/7.3/fpm/
+mv setup_serv/template/poolserv.conf /etc/php/7.3/fpm/pool.d/
+mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
+echo "Seting up new user for website management....."
+adduser -m wordy
+mkdir -p /home/wordy/logs
+chown wordy:www-data /home/wordy/logs/
+rm /etc/nginx/sites-enabled/default
+rm /etc/php/7.3/fpm/pool.d/www.conf
+sudo -u wordy touch /home/wordy/logs/phpfpm_error.log
 clear
-echo "Adding wordpress user....."
-echo ""
-echo "Enter a password for the new wordpress user to have..."
-useradd -m wordpress
-passwd wordpress
-mkdir /etc/php/7.3/fpm/sockets
-mkdir /home/wordpress/logs
-chown -R wordpress:wordpress /var/www/wordpress
+echo "Setting up mysql....."
+echo "Make a new or duplicate root passwd and answer Y to the following prompts....."
+mysql_secure_installation
+systemctl restart mysql
 clear
-
-
-echo "Editing wordpress mysql config...."
-read -p "What is your new MariaDB (MySQL) username? " utut
-sed -i "s/username_here/$utut/gi" /var/www/wordpress/wp-config.php
-read -p "What is your new MariaDB (MySQL) password? " passwder
-sed -i "s/password_here/$passwder/gi" /var/www/wordpress/wp-config.php
+echo "Setting up new website database....."
+echo "login with your mysql passwd that is either your root account passwd, or the one you just set up....."
+echo "after that, copy and execute the following queries....."
+echo "CREATE DATABASE sitename;"
+echo "CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'newpasswd';"
+echo "GRANT ALL PRIVILEGES ON sitename.* TO newuser@localhost;"
+echo "FLUSH PRIVILEGES;"
+echo "EXIT"
+mysql -u root -p
 clear
-echo "In a separate terminal, make the following changes to /var/www/wordpress/wp-config.php ....."
-echo ""
-echo ""
-echo "Find "
-echo ""
-echo ""
-echo "Just below, Find the KEY lines, EX: define('AUTH_KEY', / define('SECURE_AUTH_KEY'  and copy the values of the genterated salts below....."
-echo ""
-echo "*NOTE: Copy what is between the single quotes below into its respective 'put your unique phrase here' place in /var/www/wordpress/wp-config.php ....."
-echo "(make sure to put values between single quotes)"
-echo ""
-echo ""
-echo ""
-echo ""
-curl -s https://api.wordpress.org/secret-key/1.1/salt/
-echo ""
-echo ""
-echo ""
-echo ""
-echo "When your done editing wp-config.php, STOP, WAIT, press c to continue the script."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-sudo chown -R wpuser:www-data /var/www/wordpress
-sudo find /var/www/wordpress -type d -exec chmod g+s {} \;
-sudo chmod g+w /var/www/wordpress/wp-content
-sudo chmod -R g+w /var/www/wordpress/wp-content/themes
-sudo chmod -R g+w /var/www/wordpress/wp-content/plugins
-clear
+echo "Getting wordpress....."
+mkdir /home/wordy/new_site
+wget https://wordpress.org/latest.tar.gz -O /home/wordy/new_site/latest.tar.gz
+tar zxf /home/wordy/new_site/latest.tar.gz
+rm latest.tar.gz
+mv wordpress new_site
+chown -R wordy:www-data /home/wordy/
+cd /home/wordy
+find . -type d -exec chmod 755 {} \;
+find . -type f -exec chmod 644 {} \;
+systemctl restart php7.3-fpm
+systemctl restart nginx
 ##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
 cd /opt/
 echo "Getting a free vpn config file from vpnbook.com/freevpm....."
@@ -247,20 +205,6 @@ go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
 chmod 755 /usr/bin/dnsleaktest
 rm -rf dnsleaktest/
 clear
-##############################    NGINX Unit Source, Config, Build, and Install     ##############################
-#echo "Installing nginx unit for wordpress....."
-#
-# nginx unit source download, compilation, and install   ###   need to figure out installing nginx unit
-#git clone https://github.com/nginx/unit.git
-#cd unit/
-#echo "Configuring Unit....."                                          
-#                                                 
-#./configure --state=/var/lib/unit --log=/var/log/unit.log --control=unix:/run/control.unit.sock --prefix=/usr/local/ --openssl
-#./configure go && ./configure java && ./configure nodejs && ./configure perl && ./configure php && ./configure python && ./configure ruby
-#make && make install 
-#systemctl restart nginx
-#cd
-#clear
 ##############################    Closing Comments   ##############################
 echo " don't forget to add a cron job 'sudo certbot renew'"
 echo "crontab -e"
