@@ -49,7 +49,7 @@ echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs    ##############################
 echo "Installing packages....."
 echo "[+]"
-sudo apt update && sudo apt install -fy speedtest-cli htop &> /dev/null
+sudo apt update &> /dev/null && sudo apt install -fy speedtest-cli htop &> /dev/null
 echo "[+]"
 apt install -fy nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server &> /dev/null
 echo "[+]"
