@@ -113,12 +113,11 @@ clear
 ##############################    SSL Cert and Key Gen    ##############################
 #ssl certbot
 echo "Installing CertBot....."
-read -p "What will your new website be called?> " website
 read -p "What domain name would you like to use for your website?> " domain
-mkdir /var/www/$domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/default.conf
-sed -i "s+root /var/www/html;+root /var/www;+gi" /etc/nginx/conf.d/default.conf
+mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
 systemctl restart nginx
+systemctl restart php7.3-fpm
 clear
 echo "In a separate terminal, run the following....."
 echo ""
@@ -133,12 +132,10 @@ printf "Ok then, moving on....."
 break
 fi
 done
-sed -i "s+domain.dns;+$domain;+gi" /etc/nginx/conf.d/wpdef-serv.conf
-sudo systemctl restart nginx
 clear
 ###############################    Service & User init    ##############################
 sudo systemctl start nginx php7.3-fpm monit && sudo systemctl enable mysql nginx php7.3-fpm monit
-cd /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mkdir -p /usr/share/nginx/cache/fcgi
 nginx -t
 systemctl restart nginx
@@ -151,11 +148,11 @@ clear
 ##############################    Wordpress Site Init Install, Setup, and Config    ##############################
 echo "Copying Templates....."
 mv setup_serv/template/new_site.conf /etc/nginx/conf.d/
+sed -i "s/domain/$domain/gi" /etc/nginx/conf.d/new_site.conf
 mv setup_serv/template/nginx.conf /etc/nginx/
 mv setup_serv/template/php-fpm.conf /etc/php/7.3/fpm/
 mv setup_serv/template/php.ini /etc/php/7.3/fpm/
 mv setup_serv/template/poolserv.conf /etc/php/7.3/fpm/pool.d/
-mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
 echo "Seting up new user for website management....."
 adduser -m wordy
 mkdir -p /home/wordy/logs
