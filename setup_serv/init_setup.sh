@@ -75,6 +75,8 @@ npm install -g node-gyp &> /dev/null
 echo "[+] 13/14"
 go get github.com/gorilla/websocket &> /dev/null
 echo "[+] 14/14"
+sudo systemctl start mysql nginx php7.3-fpm monit
+sudo systemctl enable mysql nginx php7.3-fpm monit
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
