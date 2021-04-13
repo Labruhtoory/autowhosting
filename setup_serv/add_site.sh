@@ -1,30 +1,9 @@
 #!/bin/bash
-##############################    SSL Cert and Key Gen    ##############################
-#ssl certbot
-echo "Installing CertBot....."
-read -p "What domain name would you like to use for your website?> " domain
-sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
+###############################    Service & User init    ##############################
 mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
 systemctl restart nginx
 systemctl restart php7.3-fpm
-clear
-echo "In a separate terminal, run the following....."
-echo ""
-echo "sudo certbot --nginx -d $domain"
-echo ""
-echo "Once done, copy the cert (fullchain.pem) location, and the key (privkey.pem) location....."
-echo "press c to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-clear
-###############################    Service & User init    ##############################
-sudo systemctl start nginx php7.3-fpm monit && sudo systemctl enable mysql nginx php7.3-fpm monit
+sudo systemctl enable mysql nginx php7.3-fpm monit
 cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
 mkdir -p /usr/share/nginx/cache/fcgi
 nginx -t
