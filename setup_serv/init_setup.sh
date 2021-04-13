@@ -123,3 +123,16 @@ sed -i "s+/var/lib/mongodb+/dbs/mongodb+gi" /etc/mongodb.conf
 cat /etc/mongodb.conf | grep --color dbpath
 sudo systemctl start mongodb
 clear
+##########
+echo "Would you like to setup a new site?" 
+echo "Press 'Ctrl + c' twice to cancel, or press c to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+echo ""
+printf "Ok then, moving on....."
+break
+fi
+done
+chmod +x new_site.sh
+./new_site.sh
