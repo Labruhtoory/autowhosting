@@ -19,4 +19,4 @@ $ cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone http
 (full send) *Recommended just run as root so there are no privilege conflicts
 
 
-$ cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x serv_setup.sh && ./serv_setup.sh
+$ cd /opt/ && sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x new_site_setup.sh && ./new_site_setup.sh
