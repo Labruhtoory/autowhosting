@@ -30,3 +30,21 @@ break
 fi
 done
 clear
+echo "Don't forget to make sure there is a cron job for renewing ssl certs"
+echo "check by running 'crontab -e'"
+echo "If you do not see the line below this one, make sure to copy:"
+echo "0 0   1 * * sudo certbot renew"
+echo ""
+echo ""
+echo "Dont forget to create services for server apps!"
+echo ""
+echo ""
+echo ""
+echo ""
+echo "Check credentials for the vpn at: https://www.vpnbook.com/freevpn"
+echo "Check under: Free OpenVPN"
+echo "Run the vpn with 'sudo openvpn vpnconfigfilehere' ....."
+echo ""
+echo ""
+echo ""
+echo "Done!"
