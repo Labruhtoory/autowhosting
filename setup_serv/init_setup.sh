@@ -134,5 +134,10 @@ printf "Ok then, moving on....."
 break
 fi
 done
+##############################    New User For Web Management   ##############################
+echo "Seting up new user for website management....."
+echo "In a seperate terminal, run the following 'adduser wordy'"
+echo "All information is optional except for a passwd, remeber it....."
+mkdir -p /home/wordy/logs
 chmod +x new_site.sh
 ./new_site.sh
