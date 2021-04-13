@@ -48,33 +48,33 @@ echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs    ##############################
 echo "Installing packages....."
-echo "[+]"
+echo "[+] 1/14"
 sudo apt update &> /dev/null && sudo apt install -fy speedtest-cli htop &> /dev/null
-echo "[+]"
+echo "[+] 2/14"
 apt install -fy nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server &> /dev/null
-echo "[+]"
+echo "[+] 3/14"
 apt install -fy build-essential python python3 python3-pip golang openssl libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
-echo "[+]"
+echo "[+] 4/14"
 apt install -fy phppgadmin unzip zip php7.3 libphp7.3-embed php7.3-bcmath php7.3-bz2 php7.3-cli php7.3-common php7.3-curl php7.3-dba php7.3-dev &> /dev/null
-echo "[+]"
+echo "[+] 5/14"
 apt install -fy php7.3-enchant php7.3-fpm php7.3-gd php7.3-gmp php7.3-imap php7.3-imagick php7.3-interbase php7.3-intl php7.3-json php7.3-ldap php7.3-mbstring &> /dev/null
-echo "[+]"
+echo "[+] 6/14"
 apt install -fy php7.3-mysql php7.3-odbc php7.3-opcache php7.3-pgsql php7.3-phpdbg php7.3-pspell php7.3-readline php7.3-recode php7.3-snmp php7.3-soap &> /dev/null
-echo "[+]"
+echo "[+] 7/14"
 apt install -fy php7.3-sybase php7.3-tidy php7.3-xml php7.3-xmlrpc php7.3-xsl php7.3-zip &> /dev/null
-echo "[+]"
+echo "[+] 8/14"
 sudo python3 -m pip install --upgrade pip &> /dev/null
-echo "[+]"
+echo "[+] 9/14"
 sudo apt remove -fy apache2 apache2-utils apache2-data &> /dev/null
-echo "[+]"
+echo "[+] 10/14"
 curl -sL https://deb.nodesource.com/setup_12.x | bash - &> /dev/null
-echo "[+]"
+echo "[+] 11/14"
 sudo apt install -fy nodejs &> /dev/null
-echo "[+]"
+echo "[+] 12/14"
 npm install -g node-gyp &> /dev/null
-echo "[+]"
+echo "[+] 13/14"
 go get github.com/gorilla/websocket &> /dev/null
-echo "[+]"
+echo "[+] 14/14"
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
