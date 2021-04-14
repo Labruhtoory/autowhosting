@@ -125,8 +125,13 @@ sed -i "s+/var/lib/mongodb+/dbs/mongodb+gi" /etc/mongodb.conf
 cat /etc/mongodb.conf | grep --color dbpath
 sudo systemctl start mongodb
 clear
+echo "Seting up new user for website management....."
+echo "In a seperate terminal, run the following 'adduser wordy'"
+echo "All information is optional except for the passwd, remeber it....."
+mkdir -p /home/wordy/logs
+chown -R wordy:www-data /home/wordy
 ##########
-echo "Would you like to setup a new site?" 
+echo "Would you like to setup a new site now?" 
 echo "Press 'Ctrl + c' twice to cancel, or press c to continue....."
 while : ; do
 read -n 1 k <&1
@@ -136,11 +141,5 @@ printf "Ok then, moving on....."
 break
 fi
 done
-##############################    New User For Web Management   ##############################
-echo "Seting up new user for website management....."
-echo "In a seperate terminal, run the following 'adduser wordy'"
-echo "All information is optional except for the passwd, remeber it....."
-mkdir -p /home/wordy/logs
-chown -R wordy:www-data /home/wordy
 chmod +x add_site.sh
 ./add_site.sh
