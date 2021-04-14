@@ -44,14 +44,16 @@ fi
 done
 clear
 ##############################   Networking   ##############################
+echo "Setting up"
+sudo apt update &> /dev/null
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf
 ##############################   Init Installs    ##############################
 echo "Installing packages....."
 echo "[+] 1/14"
-sudo apt update &> /dev/null && sudo apt install -fy speedtest-cli htop &> /dev/null
+apt update &> /dev/null
 echo "[+] 2/14"
-apt install -fy nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server &> /dev/null
+apt install -fy speedtest-cli htop nginx software-properties-common python-certbot-nginx mariadb-server mongodb-server &> /dev/null
 echo "[+] 3/14"
 apt install -fy build-essential python python3 python3-pip golang openssl libphp-embed libperl-dev python-dev ruby-dev default-jdk libssl-dev libpcre2-dev &> /dev/null
 echo "[+] 4/14"
@@ -128,6 +130,15 @@ clear
 echo "Seting up new user for website management....."
 echo "In a seperate terminal, run the following 'adduser wordy'"
 echo "All information is optional except for the passwd, remeber it....."
+echo "press c to continue....."
+while : ; do
+read -n 1 k <&1
+if [[ $k = c ]] ; then
+echo ""
+printf "Ok then, moving on....."
+break
+fi
+done
 mkdir -p /home/wordy/logs
 chown -R wordy:www-data /home/wordy
 ##########
