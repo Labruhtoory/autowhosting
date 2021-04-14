@@ -11,7 +11,7 @@ fi
 done
 #ssl certbot
 echo "Installing CertBot....."
-read -p "What is the domain of your website?> " domain
+read -p "What is the domain of your new website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
 
 clear
