@@ -1,5 +1,15 @@
 #!/bin/bash
 ###############################    Service & User init    ##############################
+read -p "Would you like to use ssl? y/n> " ans
+if [ $ans == "n" ];
+then
+  (copy http templates)
+else
+  (copy https templates)
+  
+  
+  
+  
 mv setup_serv/template/www.conf /etc/php/7.3/fpm/pool.d/
 systemctl restart nginx
 systemctl restart php7.3-fpm
