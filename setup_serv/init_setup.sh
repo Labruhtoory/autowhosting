@@ -141,7 +141,26 @@ fi
 done
 mkdir -p /home/wordy/logs
 chown -R wordy:www-data /home/wordy
-##########
+##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
+cd /opt/
+echo "Getting a free vpn config file from vpnbook.com/freevpm....."
+sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
+unzip VPNBook.com-OpenVPN-US2.zip
+sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
+clear
+echo "installing a dns leak test, run by commad 'dnsleaktest'"
+git clone https://github.com/macvk/dnsleaktest.git
+go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
+chmod 755 /usr/bin/dnsleaktest
+rm -rf dnsleaktest/
+clear
+##############################     Close Up     ##############################
+echo "Check credentials for the vpn at: https://www.vpnbook.com/freevpn"
+echo "Check under: Free OpenVPN"
+echo "Run the vpn with 'sudo openvpn vpnconfigfilehere' ....."
+echo "Run a dnsleaktest by running 'dnsleaktest'....."
+echo ""
+echo ""
 echo "Would you like to setup a new site now?" 
 echo "Press 'Ctrl + c' twice to cancel, or press c to continue....."
 while : ; do
