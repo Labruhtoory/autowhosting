@@ -7,8 +7,8 @@ then
 else
   (copy https templates)
   (setup certbot)
-  chmod +x sslstuff.sh
-  ./sslstuff.sh
+  chmod +x sslgen.sh
+  ./sslgen.sh
   cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
   
   
