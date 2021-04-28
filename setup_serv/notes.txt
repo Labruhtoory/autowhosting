@@ -3,8 +3,8 @@
 
 3)
 
-sudo systemctl start nginx php7.4-fpm monit
-sudo systemctl enable mysql nginx php7.4-fpm monit
+sudo systemctl start nginx php7.3-fpm monit
+sudo systemctl enable mysql nginx php7.3-fpm monit
 
 4)
 
@@ -20,16 +20,16 @@ systemctl reload nginx
 
 mkdir /run/php-fpm
 
-mv /etc/php/7.4/fpm/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf.ORIG
-nano /etc/php/7.4/fpm/php-fpm.conf
+mv /etc/php/7.3/fpm/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf.ORIG
+nano /etc/php/7.3/fpm/php-fpm.conf
         > insert php-fpm.conf
-rm /etc/php/7.4/fpm/pool.d/www.conf
-nano /etc/php/7.4/fpm/pool.d/www.conf
+rm /etc/php/7.3/fpm/pool.d/www.conf
+nano /etc/php/7.3/fpm/pool.d/www.conf
         > insert www.conf
-mv /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/php.ini.ORIG
-nano /etc/php/7.4/fpm/php.ini
+mv /etc/php/7.3/fpm/php.ini /etc/php/7.3/fpm/php.ini.ORIG
+nano /etc/php/7.3/fpm/php.ini
         > insert php.ini
-systemctl restart php7.4-fpm
+systemctl restart php7.3-fpm
 
 6)
 
@@ -44,9 +44,9 @@ chown tutorialinux:www-data /home/tutorialinux/logs/
 nano /etc/nginx/conf.d/tutorialinux.conf
         > insert sitename.conf
 rm /etc/nginx/sites-enabled/default
-nano /etc/php/7.4/fpm/pool.d/tutorialinux.conf
+nano /etc/php/7.3/fpm/pool.d/tutorialinux.conf
         > insert pool.conf
-rm /etc/php/7.4/fpm/pool.d/www.conf
+rm /etc/php/7.3/fpm/pool.d/www.conf
 sudo -u tutorialinux touch /home/tutorialinux/logs/phpfpm_error.log
 
 
@@ -66,5 +66,5 @@ cd public_html
 chown -R tutorialinux:www-data .
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
-systemctl restart php7.4-fpm
+systemctl restart php7.3-fpm
 systemctl restart nginx
