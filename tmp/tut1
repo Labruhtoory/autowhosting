@@ -21,7 +21,9 @@ systemctl restart nginx
 nano /var/www/html/index.php
 
 '''
-<?php phpinfo();?>
+<?php echo "hello world"; ?>
+<?php echo date('Y-m-d H:i:s'); ?>
+<?php phpinfo(); ?>
 '''
 
 ---test to make sure php shows up---

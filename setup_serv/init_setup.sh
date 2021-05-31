@@ -11,38 +11,6 @@ printf "Ok then, moving on....."
 break
 fi
 done
-##############################  Initial comments  ##############################
-clear
-echo "*Quick note, say yes to and fill out all services' prompts. It just makes the process easier :)"
-echo ""
-echo "Before you begin, make sure that you keep track of your credentials that you setup....."
-echo "Keep in mind, you will need to supply your own credentials and information for the following services:"
-echo ""
-echo "MariaDB (MySQL):"
-echo "  > Your system/server root account password for creating and configuring the root database account"
-echo "  > A username to create a new user for accessing the new wordpress database"
-echo "  > A password for this new user"
-echo ""
-echo ""
-echo "CertBot (SSL cert&key generator):"
-echo "  > A valid email address in case verification is needed"
-echo "  > A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com"
-echo ""
-echo ""
-echo ""
-echo ""
-echo "You will also need to edit certain files. To make this easier, you will be provided instructions when needed."
-echo ""
-echo ""
-echo "Press 'c' to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-printf "Ok then, moving on....."
-break
-fi
-done
-clear
 ##############################   Networking   ##############################
 echo "Setting up"
 sudo apt update &> /dev/null
@@ -77,8 +45,8 @@ npm install -g node-gyp &> /dev/null
 echo "[+] 13/14"
 go get github.com/gorilla/websocket &> /dev/null
 echo "[+] 14/14"
-sudo systemctl start mysql nginx php7.3-fpm monit
-sudo systemctl enable mysql nginx php7.3-fpm monit
+sudo systemctl start mysql nginx php7.3-fpm
+sudo systemctl enable mysql nginx php7.3-fpm
 clear
 ##############################    DB DataDrive Setup ##############################
 echo "Setting up initial database drive....."
@@ -127,49 +95,4 @@ sed -i "s+/var/lib/mongodb+/dbs/mongodb+gi" /etc/mongodb.conf
 cat /etc/mongodb.conf | grep --color dbpath
 sudo systemctl start mongodb
 clear
-echo "Seting up new user for website management....."
-echo "In a seperate terminal, run the following 'adduser wordy'"
-echo "All information is optional except for the passwd, remeber it....."
-echo "press c to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-mkdir -p /home/wordy/logs
-chown -R wordy:www-data /home/wordy
-##############################    Xtra Free Vpn and Dnsleaktest(Optional)    ##############################
-cd /opt/
-echo "Getting a free vpn config file from vpnbook.com/freevpm....."
-sudo wget --no-check-certificate https://www.vpnbook.com/free-openvpn-account/VPNBook.com-OpenVPN-US2.zip
-unzip VPNBook.com-OpenVPN-US2.zip
-sudo rm -rf VPNBook.com-OpenVPN-US2.zip vpnbook-us2-tcp80.ovpn vpnbook-us2-tcp443.ovpn vpnbook-us2-udp53.ovpn 
-clear
-echo "installing a dns leak test, run by commad 'dnsleaktest'"
-git clone https://github.com/macvk/dnsleaktest.git
-go build -o /usr/bin/dnsleaktest dnsleaktest/dnsleaktest.go
-chmod 755 /usr/bin/dnsleaktest
-rm -rf dnsleaktest/
-clear
-##############################     Close Up     ##############################
-echo "Check credentials for the vpn at: https://www.vpnbook.com/freevpn"
-echo "Check under: Free OpenVPN"
-echo "Run the vpn with 'sudo openvpn vpnconfigfilehere' ....."
-echo "Run a dnsleaktest by running 'dnsleaktest'....."
-echo ""
-echo ""
-echo "Would you like to setup a new site now?" 
-echo "Press 'Ctrl + c' twice to cancel, or press c to continue....."
-while : ; do
-read -n 1 k <&1
-if [[ $k = c ]] ; then
-echo ""
-printf "Ok then, moving on....."
-break
-fi
-done
-chmod +x add_site.sh
-./add_site.sh
+echo "Done!!!"
