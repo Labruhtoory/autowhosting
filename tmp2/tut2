@@ -1,0 +1,30 @@
+sudo apt install apache2 -y
+sudo apt install php -y
+cd /var/www/html/
+sudo rm index.html
+sudo nano index.php
+
+''''
+<?php echo "hello world"; ?>
+<?php echo date('Y-m-d H:i:s'); ?>
+<?php phpinfo(); ?>
+''''
+
+sudo service apache2 restart
+*check web page now
+
+sudo apt install mysql-server php-mysql -y
+sudo service apache2 restart
+cd /var/www/html/
+sudo rm *
+sudo wget http://wordpress.org/latest.tar.gz
+ sudo tar xzf latest.tar.gz
+sudo mv wordpress/* .
+sudo rm -rf wordpress latest.tar.gz
+sudo chown -R www-data: .
+
+sudo mysql_secure_installation
+sudo mysql -uroot -p
+create database wordpress;
+GRANT ALL PRIVILEGES ON wordpress.* TO 'root'@'localhost' IDENTIFIED BY 'PASSWORD';
+FLUSH PRIVILEGES;
