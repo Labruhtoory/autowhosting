@@ -42,10 +42,11 @@ chown -R www-data:www-data $sitename
 #chmod -R 777 $sitename
 systemctl restart php7.3-fpm
 systemctl restart nginx
+clear
 echo "Wordpress installed and configured for port 80"
-echo "Important info!!!!!"
-echo "DB name: $sitename"
+echo "Important info for MariaDB!!!!!"
+echo "New DB name: $sitename"
 echo "DB user: root"
-echo "DB user: $mysqlpass"
+echo "DB pass: $mysqlpass"
 echo ""
 echo "Done!!!"
