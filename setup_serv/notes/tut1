@@ -73,3 +73,47 @@ root /var/www/newsite;
 
 sudo systemctl restart php7.3-fpm.service
 sudo systemctl restart nginx
+
+
+
+---------------------------------------------------------------------------
+
+Multisite (subdomain)
+
+nano /var/www/$sitename/wp-config.php
+
+*add bottom line
+'''
+define( 'WP_DEBUG', false );
+define( 'WP_ALLOW_MULTISITE', true);
+'''
+*should now see Tools>Network Setup in WP-Admin Browser
+
+*deactivate ALL plugins
+
+
+*Change Permalink Settings to Post name
+
+*change wp-config again with new lines (for subdir not suddom)
+'''
+define('MULTISITE', true);
+define('SUBDOMAIN_INSTALL', false);
+define('DOMAIN_CURRENT_SITE', '192.168.0.11');
+define('PATH_CURRENT_SITE', '/');
+define('SITE_ID_CURRENT_SITE', 1);
+define('BLOG_ID_CURRENT_SITE', 1);
+'''
+
+
+*nginx config
+#Rewrite Requests to /wp-.* on subdirectory installs.
+        if (!-e $request_filename) {
+                rewrite /wp-admin$ $scheme:$host$uri/permanent;
+                rewrite ^/[_0-9a-zA-Z-]+(/wp-.*) $1 last;
+                rewrite ^/[_0-9a-zA-Z-]+(/.*\.php)$ $1 last;
+        }
+
+*now go to Sites>Add site
+
+/wp-admin/network/site-new.php
+
