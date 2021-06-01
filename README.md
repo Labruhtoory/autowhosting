@@ -6,7 +6,7 @@
  
  *Install git, and Run as Root (recommended)
 
-$ git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x ./init_setup.sh && clear && ./init_setup.sh
+$ git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && clear && ./init_setup.sh && clear && ./add_site-dir.sh
 
 
 
