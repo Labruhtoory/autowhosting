@@ -83,9 +83,7 @@ sed -i "s+/var/lib/mysql+/dbs/mysql+gi" /etc/mysql/mariadb.conf.d/50-server.cnf
 sudo grep -R --color datadir /etc/mysql/*
 sudo systemctl start mariadb
 echo "Setting up MariaDB management..."
-mysql -u root -p $mysqlpass -e "DROP USER 'root'@'localhost';"
-mysql -u root -p $mysqlpass -e "CREATE USER 'root'@'localhost' IDENTIFIED BY 'toor';"
-mysql -u root -p $mysqlpass -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';"
+mysql -u root -p$mysqlpass -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'toor'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost';"
 clear
 ##############################    MongoDB (NoSQL) Install & Data Migration   ##############################
 echo "Migrating Mongodb (NoSQL) data to mounted disk....."
