@@ -12,14 +12,8 @@ printf "Ok then, moving on....."
 break
 fi
 done
-##############################   Networking   ##############################
-echo ""
-echo "Getting things up to date..."
-echo "nameserver 1.1.1.1" > /etc/resolv.conf
-echo "nameserver 1.0.0.1" >> /etc/resolv.conf
-sudo apt update &> /dev/null
 ##############################    DB DataDrive Setup   ##############################
-read -p "Enter new MariaDB root password: " newpass
+read -p "Enter a new password for MariaDB: " newpass
 echo "Setting up dedicated database drive partition....."
 echo "Please insert a drive with the desired (EMPTY) partition to use....."
 lsblk | grep "disk\|part"
@@ -45,6 +39,10 @@ echo "/dev/$answ        /dbs        ext4    defaults      0      0" >> /etc/fsta
 echo "Ok, /dev/$answ has been prepped with an ext4 filsystem for mounting on boot"
 clear
 ##############################   Init Installs    ##############################
+echo "Getting things up to date..."
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
+echo "nameserver 1.0.0.1" >> /etc/resolv.conf
+sudo apt update &> /dev/null
 echo "Installing packages....."
 #echo "[+] 1/14"
 #apt update &> /dev/null
