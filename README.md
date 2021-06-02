@@ -7,8 +7,7 @@
  
 ## Standalone Server Script & Prerquisites.....
  
- *Run as Root (recommended)*
- *This one liner will run the init script and adds a WP site.*
+ *Execute this one liner (Recommended as Root) to run the init script and add a WP site.*
                         
     git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
 
