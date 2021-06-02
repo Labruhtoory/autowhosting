@@ -35,11 +35,10 @@ echo "Configuring zip..."
 rm latest.tar.gz
 mv wordpress $sitename
 mv $sitename/wp-config-sample.php $sitename/wp-config.php
-sed -i "s/database_name_here/$sitename/gi" $sitename/wp-config.php
-sed -i "s/username_here/root/gi" $sitename/wp-config.php
-sed -i "s/password_here/$mysqlpass/gi" $sitename/wp-config.php
+#sed -i "s/database_name_here/$sitename/gi" $sitename/wp-config.php
+#sed -i "s/username_here/root/gi" $sitename/wp-config.php
+#sed -i "s/password_here/$mysqlpass/gi" $sitename/wp-config.php
 chown -R www-data:www-data $sitename
-#chmod -R 777 $sitename
 systemctl restart php7.3-fpm
 systemctl restart nginx
 clear
