@@ -31,16 +31,16 @@
 
 ## What each setup script does
 
-**init:**
+**init_setup:**
    - Optimizes a drive partition for DB management, this will take lots of stress off the system partition with all the DB queries being made.
    - Installs packages of nginx, mysql, nosql, and php.
    - Configures mysql and nosql to run on the selected drive partition.
    - Configures php and nginx for basic usage
 
-**add_site_dir**
+**add_site_di:r**
    - Configures ngnix and mysql for a new wordpress website with the name of the answer to the prompt
    - Installs wordpress in the prompted /var/www/sitename directory, and configures wordpress to use the new database
 
-**{SSL support coming soon} add_ssl**
+**{SSL support coming soon} add_ssl:**
    - Creates a verified ssl certificate
    - Configures nginx to use the new ssl cert
