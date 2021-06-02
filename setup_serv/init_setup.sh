@@ -109,7 +109,7 @@ echo "Making tmp site for nginx"
 rm -rf /etc/nginx/sites-available/default
 cp template/default.conf /etc/nginx/sites-available/default
 systemctl restart nginx
-sed -i "s/cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/gi" /etc/mysql/mariadb.conf.d/50-server.cnf
+sed -i "s/cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/gi" /etc/php/7.3/fpm/php.ini
 systemctl restart php7.3-fpm.service
 touch /var/www/html/index.php
 echo "<?php echo "hello world"; ?>" > /var/www/html/index.php
