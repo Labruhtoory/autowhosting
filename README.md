@@ -16,8 +16,7 @@
    - Read all prompts, when ready, press c, or answer y
 
 **MariaDB (MySQL):**
-   - A dedicated drive partition for databases
-   - *(For example an empty usb drive with one partition for an rpi)*
+   - A dedicated drive partition for databases *(For example an empty usb drive with one partition for an rpi)*
    - Need a new password for setup
 
 **{SSL support coming soon} CertBot (SSL cert&key generator):**
