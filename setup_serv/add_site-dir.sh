@@ -44,7 +44,7 @@ systemctl restart php7.3-fpm
 systemctl restart nginx
 clear
 echo "Wordpress installed and configured for port 80"
-echo "Important info for MariaDB!!!!!"
+echo "Important info for MariaDB:"
 echo "New DB name: $sitename"
 echo "DB user: root"
 echo "DB pass: $mysqlpass"
