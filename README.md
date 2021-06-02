@@ -14,14 +14,14 @@
 
 
 
-## Notes to consider when running the scripts
+## Requirements to consider when running scripts
 
 **Promts:**
-   - Read all prompts, when ready, press c, or answer y
+   - Read all prompts and when ready, press c, or answer y
 
 **MariaDB (MySQL):**
    - A dedicated drive partition for databases *(For example an empty usb drive with one partition for an rpi)*
-   - Need a new password for setup
+   - A new password for root user setup
 
 **{SSL support coming soon} CertBot (SSL cert&key generator):**
    - A valid email address in case verification is needed
