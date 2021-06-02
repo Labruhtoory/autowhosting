@@ -1,4 +1,5 @@
 #!/bin/bash
+clear
 ###############################    Service & User init    ##############################
 echo "What is the name of the site that you want to add?"
 echo "*Replace spaces with _ "
