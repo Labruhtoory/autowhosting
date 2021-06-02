@@ -78,7 +78,7 @@ sudo systemctl restart nginx
 
 ---------------------------------------------------------------------------
 
-Multisite (subdomain)
+Multisite (sub dir)
 
 nano /var/www/$sitename/wp-config.php
 
