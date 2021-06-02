@@ -3,6 +3,8 @@
  Automated process to set up wordpress website hosting.
  
  
+ 
+ 
 ## Standalone Server Script & Prerquisites.....
  
  *Run as Root (recommended)*
@@ -10,7 +12,10 @@
                         
     git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
 
-## Notes to consider when running the scripts**
+
+
+
+## Notes to consider when running the scripts
 
 **Promts:**
    - Read all prompts, when ready, press c, or answer y
