@@ -12,6 +12,7 @@ printf "Ok then, moving on....."
 break
 fi
 done
+clear
 ##############################    DB DataDrive Setup   ##############################
 read -p "Enter new MariaDB root password: " newpass
 echo "Setting up dedicated database drive partition....."
