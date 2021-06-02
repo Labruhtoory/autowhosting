@@ -15,6 +15,7 @@ done
 clear
 ##############################    DB DataDrive Setup   ##############################
 read -p "Enter a new password for MariaDB: " newpass
+clear
 echo "Setting up dedicated database drive partition....."
 echo "Please insert a drive with the desired (EMPTY) partition to use....."
 lsblk | grep "disk\|part"
