@@ -5,8 +5,8 @@
  
 ## Standalone Server Script & Prerquisites.....
  
- *Run as Root (recommended)
- *This one liner will run the init script and adds a WP site.
+ *Run as Root (recommended)*
+ *This one liner will run the init script and adds a WP site.*
                         
     git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
 
@@ -17,7 +17,7 @@
 
 **MariaDB (MySQL):**
    - A dedicated drive partition for databases
-     *(For example an empty usb drive with one partition for an rpi)
+   - *(For example an empty usb drive with one partition for an rpi)*
    - Need a new password for setup
 
 **{SSL support coming soon} CertBot (SSL cert&key generator):**
