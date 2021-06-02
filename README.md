@@ -7,12 +7,7 @@
  
  *Run as Root (recommended)
 
-Init
-curl -s https://raw.githubusercontent.com/Labruhtoory/whost-nginx/main/setup_serv/init_setup.sh | bash
-
-Add site
-
-curl -s https://raw.githubusercontent.com/Labruhtoory/whost-nginx/main/setup_serv/add_site-dir.sh | bash
+$ git clone https://github.com/Labruhtoory/whost-nginx.git && cd whost-nginx/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh
 
                         Here are some notes to consider when running the scripts:
 
