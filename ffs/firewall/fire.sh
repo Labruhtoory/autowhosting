@@ -12,7 +12,7 @@ sudo ufw allow ssh
 # make ports available to be used for server apps
 
 clone
-echo "Making 10 ports avalible for misc server apps..."
+echo "Making 11 ports avalible for misc server apps..."
 sudo ufw allow 8000:8010/tcp
 sudo ufw allow 8000:8010/udp
 
