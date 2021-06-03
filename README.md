@@ -1,20 +1,17 @@
 # whost-nginx
 
- Automated process to set up wordpress website hosting.
+ Automated process to set up wordpress website hosting, and for web hosting in a cluster.
  
  
  
- 
-## Standalone Server Setup Script & Prerquisites.....
+## Web Hosting Server Setup Script & Prerquisites.....
  
  *Execute this one liner (Recommended as Root) to run the init script and add a WP site.*
                         
-    sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/setup_serv/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
+    sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/whs/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
 
 
-
-
-## Requirements to consider when running setup scripts
+### Requirements to consider when running setup scripts
 
 **Promts:**
    - Read all prompts and when ready, press c, or answer y
@@ -28,8 +25,7 @@
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
 
 
-
-## What each setup script does
+### What each setup script does
 
 **init_setup:**
    - Optimizes a drive partition for DB management, this will take lots of stress off the system partition with all the DB queries being made.
