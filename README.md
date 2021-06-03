@@ -6,7 +6,7 @@
  
  
  
- ## Web Hosting Server Setup Script & Prerequisites
+ ## Web Hosting Server Setup & Prerequisites
  
  *Execute this one liner (Recommended as Root) to run the init script and add a WP site.*
                         
@@ -27,5 +27,5 @@
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
 
 
- ## Load Balancing Server Setup Script & Prerequisites
+ ## Load Balancing Server Setup & Prerequisites
  ### in progress....
