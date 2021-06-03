@@ -73,7 +73,7 @@ echo "Installing packages....."
 #echo "[+] 13/14"
 go get github.com/gorilla/websocket &> /dev/null
 #echo "[+] 14/14"
-sudo apt install -fy nginx mariadb-server mariadb-client mongodb-server php7.3 php7.3-fpm php7.3-mysql &> /dev/null
+sudo apt install -fy nginx mariadb-server mariadb-client mongodb-server php7.3 php7.3-fpm php7.3-mysql ufw &> /dev/null
 sudo systemctl start mysql nginx php7.3-fpm
 sudo systemctl enable mysql nginx php7.3-fpm
 clear
