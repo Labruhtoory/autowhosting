@@ -27,5 +27,5 @@
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
 
 
- ## Forward-Facing Server Setup Script & Prerequisites
+ ## Load Balancing Server Setup Script & Prerequisites
  ### in progress....
