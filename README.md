@@ -6,7 +6,7 @@
  
  
  
- ## Web Hosting Server Setup Script & Prerequisites.....
+ ## Web Hosting Server Setup Script & Prerequisites
  
  *Execute this one liner (Recommended as Root) to run the init script and add a WP site.*
                         
@@ -25,3 +25,7 @@
 **{SSL support coming soon} CertBot (SSL cert&key generator):**
    - A valid email address in case verification is needed
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
+
+
+ ## Forward-Facing Server Setup Script & Prerequisites
+ ### in progress....
