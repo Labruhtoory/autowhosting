@@ -27,5 +27,17 @@
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
 
 
- ## Load Balancing Server Setup & Prerequisites
- ### in progress....
+## Load Balancing Server Setup & Prerequisites
+
+ *Execute this one liner (Recommended as Root) to run the setup script*
+ 
+    sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/lbs/ && chmod +x setup.sh firewall/fire.sh vpn/pivpn.sh && ./setup.sh
+
+
+### Requirements to consider when running web hosting scripts
+
+**Promts:**
+   - Read all prompts and when ready, press c, or answer y
+
+**Backend Servers**
+   - The number of servers that you will use, and the ip address for each server.
