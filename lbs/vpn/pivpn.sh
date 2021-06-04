@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # copied from https://install.pivpn.io for faster setup and
-# a reference for a forward-facing node of a cluster
+# a reference for maintaining a cluster
 
 # PiVPN: Trivial OpenVPN or WireGuard setup and configuration
 # Easiest setup and mangement of OpenVPN or WireGuard on Raspberry Pi
