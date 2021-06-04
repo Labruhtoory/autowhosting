@@ -1,4 +1,4 @@
-# whost-nginx
+# AutoWHosting
 
  Automated process to set up wordpress website hosting on nginx, and for web hosting in an nginx cluster.
  
