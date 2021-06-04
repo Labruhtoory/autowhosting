@@ -27,11 +27,12 @@ echo "Setting up the firewall"
 chmod +x firewall/fire.sh && ./firewall/fire.sh
 clear
 echo "Done!!!"
-##############################    VPN Server Setup   ##############################
-echo "Setting up vpn server"
-chmod +x vpn/pivpn.sh && ./vpn/pivpn.sh
-clear
 ##############################    Nginx Setup   ##############################
 echo "Setting up nginx"
-chmod +x nginx/ng.sh && ./nginx/ng.sh
+rm -rf /etc/nginx/sites-enabled/default
+cp nginx/lbs.conf /etc/nginx/sites-enabled/lbs.conf
 clear
+##############################    VPN Server Setup   ##############################
+echo "Setting up vpn server"
+echo "Run the following command to finish setup:"
+echo "curl -L https://install.pivpn.io | bash"
