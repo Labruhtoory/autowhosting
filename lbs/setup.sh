@@ -13,6 +13,16 @@ break
 fi
 done
 clear
+##############################    Collect Info   ##############################
+read -p "How many backend servers will this server route traffic to?: " numserv
+i=0
+arrServ=()
+while [ $i -ne $numserv ]
+do
+        i=$(($i+1))
+        read -p "server$i ip: " servip
+        arrServ+=($servip)
+done
 ##############################    Install Packages   ##############################
 echo "Getting things up to date..."
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
@@ -23,16 +33,28 @@ sudo systemctl start nginx
 sudo systemctl enable nginx
 clear
 ##############################    Firewall Setup   ##############################
-echo "Setting up the firewall"
+echo "Setting up the firewall..."
 chmod +x firewall/fire.sh && ./firewall/fire.sh
 clear
 echo "Done!!!"
 ##############################    Nginx Setup   ##############################
-echo "Setting up nginx"
+echo "Setting up nginx..."
 rm -rf /etc/nginx/sites-enabled/default
 cp nginx/lbs.conf /etc/nginx/sites-enabled/lbs.conf
+
+# add this line for the amount of servers
+#server backend max_fails=3 fail_timeout=5s;
+
+#replace every 'backend' with server ip
+
+for $servip in "${arrServ[@]}"
+do
+	sed '/Add backend servers here/a \server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf
+    sed -i "s/backend/$servip/gi" /etc/nginx/sites-enabled/lbs.conf
+done
+
 clear
 ##############################    VPN Server Setup   ##############################
-echo "Setting up vpn server"
+echo "Setting up vpn server..."
 echo "Run the following command to finish setup:"
 echo "curl -L https://install.pivpn.io | bash"
