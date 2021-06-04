@@ -34,7 +34,7 @@
     sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/lbs/ && chmod +x setup.sh firewall/fire.sh vpn/pivpn.sh && ./setup.sh
 
 
-### Requirements to consider when running web hosting scripts
+### Requirements to consider when running load balancing scripts
 
 **Promts:**
    - Read all prompts and when ready, press c, or answer y
