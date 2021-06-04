@@ -49,7 +49,7 @@ cp nginx/lbs.conf /etc/nginx/sites-enabled/lbs.conf
 
 for $servip in "${arrServ[@]}"
 do
-	#sed '/Add backend servers here/a \server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf > /etc/nginx/sites-enabled/lbs.conf
+    #sed '/Add backend servers here/a \server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf > /etc/nginx/sites-enabled/lbs.conf
     sed -i '13i\   server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf
     sed -i "s/backend/$servip/g" /etc/nginx/sites-enabled/lbs.conf
 done
