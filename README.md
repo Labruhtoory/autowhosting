@@ -41,3 +41,7 @@
 
 **Backend Servers**
    - The number of servers that you will use, and the ip address for each server.
+
+
+## Backup Server Setup & Prerequisites
+coming soon...
