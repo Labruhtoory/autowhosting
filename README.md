@@ -1,4 +1,4 @@
-# whost-nginx
+# AutoWHosting
 
  Automated process to set up wordpress website hosting on nginx, and for web hosting in an nginx cluster.
  
@@ -41,3 +41,11 @@
 
 **Backend Servers**
    - The number of servers that you will use, and the ip address for each server.
+
+
+## Backups Server Setup & Prerequisites
+in progress...
+
+
+## Mail Server Setup & Prerequisites
+in progress...
