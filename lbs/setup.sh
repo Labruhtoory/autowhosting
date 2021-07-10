@@ -56,6 +56,6 @@ done
 
 clear
 ##############################    VPN Server Setup   ##############################
-echo "Setting up vpn server..."
-echo "Run the following command to finish setup:"
+echo "Run the following command to setup a vpn with this server:"
 echo "curl -L https://install.pivpn.io | bash"
+echo "Done with setup!"
