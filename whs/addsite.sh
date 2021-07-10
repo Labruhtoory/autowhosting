@@ -12,9 +12,7 @@ then
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
   cp template/https.conf /etc/nginx/sites-enabled/$domain
   echo "Installing CertBot....."
-  sudo apt install -fy python-certbot-nginx ufw &> /dev/null
-  sudo ufw allow 'Nginx Full'
-  sudo ufw enable
+  sudo apt install -fy python-certbot-nginx
   clear
   echo "In a separate terminal, run the following....."
   echo ""
