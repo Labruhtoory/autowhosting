@@ -1,7 +1,8 @@
 #!/bin/bash
 clear
 ###############################    Service & User init    ##############################
-read -p "What is the domain of you site?" domain
+read -p "What is the name of you site?: " sitename
+read -p "What is the full domain of you site?: " domain
 read -p "What is your mysql root passwd?: " mysqlpass
 read -p "Would you like to use ssl? y/n> " sslans
 ##############################    Nginx config    ##############################
@@ -37,7 +38,7 @@ then
 else
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
   cp template/http.conf /etc/nginx/conf.d/$domain
-  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
+  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/$domain
   systemctl restart nginx
 fi
 ##############################    MariaDB config    ##############################
