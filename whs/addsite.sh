@@ -1,24 +1,45 @@
 #!/bin/bash
 clear
 ###############################    Service & User init    ##############################
-echo "What is the name of the site that you want to add?"
-echo "*Replace spaces with _ "
-read -p "Enter name here: " sitename
+read -p "What is the domain of you site?" domain
 read -p "What is your mysql root passwd?: " mysqlpass
 read -p "Would you like to use ssl? y/n> " sslans
 ##############################    Nginx config    ##############################
 echo "Editing nginx config....."
-if [ $sslans == "n" ];
+if [ $sslans == "y" ];
 then
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
-  cp template/http.conf /etc/nginx/conf.d/$sitename
-  sed -i "s+root /var/www/html+root /var/www/$sitename+gi" /etc/nginx/conf.d/$sitename
-  systemctl restart nginx
+  cp template/https.conf /etc/nginx/conf.d/$domain
+  echo "Installing CertBot....."
+  sudo apt install -fy python-certbot-nginx ufw &> /dev/null
+  sudo ufw allow 'Nginx Full'
+  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
+  clear
+  echo "In a separate terminal, run the following....."
+  echo ""
+  echo "sudo certbot --nginx -d $domain"
+  echo ""
+  echo "Once done, copy down the cert (fullchain.pem) location, and the key (privkey.pem) location....."
+  echo "press c to continue....."
+  while : ; do
+  read -n 1 k <&1
+  if [[ $k = c ]] ; then
+  echo ""
+  printf "Ok then, moving on....."
+  break
+  fi
+  done
+  clear
+  echo "Don't forget to make sure there is a cron job for renewing ssl certs"
+  echo "check by running 'crontab -e'"
+  echo "If you do not see the line below this one, make sure to copy:"
+  echo "0 0   1 * * sudo certbot renew"
 else
-  (copy https templates)
-  (setup certbot)
-  chmod +x sslgen.sh
-  ./sslgen.sh
+  rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
+  cp template/http.conf /etc/nginx/conf.d/$domain
+  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
+  systemctl restart nginx
+fi
 ##############################    MariaDB config    ##############################
 echo "Setting up new website database....."
 mysql -u root -p$mysqlpass -e "CREATE DATABASE $sitename;"
