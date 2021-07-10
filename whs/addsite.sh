@@ -14,6 +14,7 @@ then
   echo "Installing CertBot....."
   sudo apt install -fy python-certbot-nginx ufw &> /dev/null
   sudo ufw allow 'Nginx Full'
+  sudo ufw enable
   clear
   echo "In a separate terminal, run the following....."
   echo ""
