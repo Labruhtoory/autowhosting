@@ -14,7 +14,6 @@ then
   echo "Installing CertBot....."
   sudo apt install -fy python-certbot-nginx ufw &> /dev/null
   sudo ufw allow 'Nginx Full'
-  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
   clear
   echo "In a separate terminal, run the following....."
   echo ""
@@ -39,7 +38,7 @@ then
 else
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
   cp template/http.conf /etc/nginx/sites-enabled/$domain
-  sed -i "s+/var/www+/var/www/$sitename+gi" /etc/nginx/conf.d/$domain
+  sed -i "s+/var/www+/var/www/$sitename+gi" /etc/nginx/sites-enabled/$domain
   systemctl restart nginx
 fi
 ##############################    MariaDB config    ##############################
