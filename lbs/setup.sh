@@ -39,8 +39,8 @@ clear
 echo "Done!!!"
 ##############################    Nginx Setup   ##############################
 echo "Setting up nginx..."
-rm -rf /etc/nginx/sites-enabled/default
-cp nginx/lbs.conf /etc/nginx/sites-enabled/lbs.conf
+rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
+cp nginx/lbs.conf /etc/nginx/conf.d/lbs.conf
 
 # add this line for the amount of servers
 #server backend max_fails=3 fail_timeout=5s;
@@ -50,8 +50,8 @@ cp nginx/lbs.conf /etc/nginx/sites-enabled/lbs.conf
 for $servip in "${arrServ[@]}"
 do
     #sed '/Add backend servers here/a \server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf > /etc/nginx/sites-enabled/lbs.conf
-    sed -i '13i\   server backend max_fails=3 fail_timeout=5s;' /etc/nginx/sites-enabled/lbs.conf
-    sed -i "s/backend/$servip/g" /etc/nginx/sites-enabled/lbs.conf
+    sed -i '13i\   server backend max_fails=3 fail_timeout=5s;' /etc/nginx/conf.d/lbs.conf
+    sed -i "s/backend/$servip/g" /etc/nginx/conf.d/lbs.conf
 done
 
 clear
