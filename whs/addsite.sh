@@ -10,7 +10,7 @@ echo "Editing nginx config....."
 if [ $sslans == "y" ];
 then
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
-  cp template/https.conf /etc/nginx/conf.d/$domain
+  cp template/https.conf /etc/nginx/sites-enabled/$domain
   echo "Installing CertBot....."
   sudo apt install -fy python-certbot-nginx ufw &> /dev/null
   sudo ufw allow 'Nginx Full'
@@ -35,10 +35,11 @@ then
   echo "check by running 'crontab -e'"
   echo "If you do not see the line below this one, make sure to copy:"
   echo "0 0   1 * * sudo certbot renew"
+  systemctl restart nginx
 else
   rm -rf /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default
-  cp template/http.conf /etc/nginx/conf.d/$domain
-  sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/conf.d/$domain
+  cp template/http.conf /etc/nginx/sites-enabled/$domain
+  sed -i "s+/var/www+/var/www/$sitename+gi" /etc/nginx/conf.d/$domain
   systemctl restart nginx
 fi
 ##############################    MariaDB config    ##############################
