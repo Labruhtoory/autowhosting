@@ -16,7 +16,7 @@ then
   clear
   echo "In a separate terminal, run the following....."
   echo ""
-  echo "sudo certbot --nginx -d $domain"
+  echo "sudo certbot --nginx"
   echo ""
   echo "Once done, copy down the cert (fullchain.pem) location, and the key (privkey.pem) location....."
   echo "press c to continue....."
