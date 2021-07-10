@@ -11,13 +11,15 @@ fi
 done
 #ssl certbot
 echo "Installing CertBot....."
+sudo apt install -fy python-certbot-nginx ufw &> /dev/null
+sudo ufw allow 'Nginx Full'
 read -p "What is the domain of your new website?> " domain
 sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/default.conf
 
 clear
 echo "In a separate terminal, run the following....."
 echo ""
-echo "sudo certbot --nginx -d $domain"
+echo "sudo certbot --nginx -d $domain -d www.$domain.com"
 echo ""
 echo "Once done, copy down the cert (fullchain.pem) location, and the key (privkey.pem) location....."
 echo "press c to continue....."
