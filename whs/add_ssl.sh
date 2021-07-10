@@ -19,7 +19,7 @@ sed -i "s+server_name _;+server_name $domain;+gi" /etc/nginx/sites-available/def
 clear
 echo "In a separate terminal, run the following....."
 echo ""
-echo "sudo certbot --nginx -d $domain -d www.$domain.com"
+echo "sudo certbot --nginx -d $domain"
 echo ""
 echo "Once done, copy down the cert (fullchain.pem) location, and the key (privkey.pem) location....."
 echo "press c to continue....."
