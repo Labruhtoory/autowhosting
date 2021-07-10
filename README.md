@@ -12,7 +12,6 @@
                         
     sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/whs/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
 
-
 ### Requirements to consider when running web hosting scripts
 
 **Promts:**
