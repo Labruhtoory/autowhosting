@@ -10,7 +10,7 @@
  
  *Execute this one liner (Recommended as Root) to run the init script and add a WP site.*
                         
-    sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/whs/ && chmod +x init_setup.sh add_site-dir.sh && ./init_setup.sh && ./add_site-dir.sh
+    in progress
 
 ### Requirements to consider when running web hosting scripts
 
@@ -30,7 +30,7 @@
 
  *Execute this one liner (Recommended as Root) to run the setup script*
  
-    sudo apt update && sudo apt install -fy git htop && git clone https://github.com/Labruhtoory/autowhosting.git && cd autowhosting/lbs/ && chmod +x setup.sh firewall/fire.sh vpn/pivpn.sh && ./setup.sh
+    in progress
 
 
 ### Requirements to consider when running load balancing scripts
