@@ -116,5 +116,7 @@ touch /var/www/html/index.php
 echo "<?php echo "hello world"; ?>" > /var/www/html/index.php
 echo "<?php echo date('Y-m-d H:i:s'); ?>" > /var/www/html/index.php
 echo "<?php phpinfo(); ?>" > /var/www/html/index.php
+clear
 echo "Ok, you should now see 'hello world', the web server's date time, and the php info when browsing your server on port 80."
 echo "Done with setup!!!"
+echo "To add a site, run the addsite script."
