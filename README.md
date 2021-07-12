@@ -21,7 +21,7 @@
    - A dedicated drive partition for databases *(For example an empty usb drive with one partition, and can be any filesystem type)*
    - A new password for root user setup
 
-**{SSL support coming soon} CertBot (SSL cert&key generator):**
+**{SSL support in progress} CertBot (SSL cert&key generator):**
    - A valid email address in case verification is needed
    - A resitered domain name for configuring Nginx DNS handling EX: myawesomesite.com
 
@@ -40,11 +40,3 @@
 
 **Backend Servers**
    - The number of servers that you will use, and the ip address for each server.
-
-
-## Backups Server Setup & Prerequisites
-in progress...
-
-
-## Mail Server Setup & Prerequisites
-in progress...
