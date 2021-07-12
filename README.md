@@ -39,4 +39,4 @@
    - Read all prompts and when ready, press c, or answer y
 
 **Backend Servers**
-   - The number of servers that you will use, and the ip address for each server.
+   - The number of servers that you will use if using a cluster, and the ip address for each server.
